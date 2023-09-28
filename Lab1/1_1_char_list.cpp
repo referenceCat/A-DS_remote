@@ -4,39 +4,43 @@
 
 struct ListNode {
     char digit;
-    ListNode* next = NULL;
+    ListNode* next = nullptr;
 };
 
 struct ListHead {
     int size = 0;
-    ListNode* node;
+    ListNode* node = nullptr;
 };
 
-void cstring_to_char_list(char* str, ListHead* result) {
-    bool in_result;
-    ListNode* node;
-    for (int i = 0; str[i]; i++) {
-        in_result = false;
-        node = result->node;
-        for (int j = 0; j < result->size; j++)
-            if (node->digit == str[i]) {
-                in_result = true;
-                break;
-            }
-        node = node ->next;
-        if (!in_result) {
-            for (node = result->node; node->next!=NULL; node = node->next);
-            node->digit = str[i];
-        }
-    }
-}
-
 bool search(ListHead* list, char value) {
+    if (list->size == 0) return false;
     ListNode* node;
-    for (node = list->node; node->next!=NULL; node = node->next) {
+    for (node = list->node; node->next!= nullptr; node = node->next) {
         if (node->digit == value) return true;
     }
     return node->digit == value;
+}
+
+void cstring_to_char_list(char* str, ListHead* result) {
+    bool in_result;
+    result->size = 0;
+    result->node = nullptr;
+    ListNode* node;
+    for (int i = 0; str[i]; i++) {
+        if (!search(result, str[i])) {
+            if (result->size == 0) {
+                result->node = new ListNode;
+                node = result->node;
+            }
+            else {
+                node->next = new ListNode;
+                node = node->next;
+
+            }
+            node->digit = str[i];
+            result->size++;
+        }
+    }
 }
 
 void char_list_to_cstring(ListHead* list, char* result) {
@@ -48,18 +52,25 @@ void char_list_to_cstring(ListHead* list, char* result) {
     result[list->size] = '\0';
 }
 
-int example_function_for_char_array(ListHead* a, ListHead* b, ListHead* c, ListHead* d, ListHead* result) {
+void example_function_for_char_list(ListHead* a, ListHead* b, ListHead* c, ListHead* d, ListHead* result) {
     char* digits = "0123456789";
-    int result_size = 0;
+    result->size = 0;
+    result->node = nullptr;
     ListNode* node = result->node;
     for (int i = 0; i < 10; i++) {
         if ((search(a, digits[i]) && !(search(b, digits[i]) || search(c, digits[i]))) || search(d, digits[i])) {
+            if (result->size == 0) {
+                result->node = new ListNode;
+                node = result->node;
+            } else {
+                node->next = new ListNode;
+                node = node->next;
+
+            }
             node->digit = digits[i];
-            result++;
-            result_size++;
+            result->size++;
         }
     }
-    return result_size;
 }
 
 int main() {
@@ -77,30 +88,24 @@ int main() {
     std::cout<<"D=";
     std::cin>>input_d;
 
-    char a[10];
-    char b[10];
-    char c[10];
-    char d[10];
+    ListHead a;
+    ListHead b;
+    ListHead c;
+    ListHead d;
 
-    int a_size;
-    int b_size;
-    int c_size;
-    int d_size;
+    cstring_to_char_list(input_a, &a);
+    cstring_to_char_list(input_b, &b);
+    cstring_to_char_list(input_c, &c);
+    cstring_to_char_list(input_d, &d);
 
-    a_size = cstring_to_char_array(input_a, a);
-    b_size = cstring_to_char_array(input_b, b);
-    c_size = cstring_to_char_array(input_c, c);
-    d_size = cstring_to_char_array(input_d, d);
+    ListHead result;
 
-    char result[10];
-    int result_size;
-
-    result_size = example_function_for_char_array(a, a_size, b, b_size, c, c_size, d, d_size, result);
+    example_function_for_char_list(&a, &b, &c, &d, &result);
 
 
 
     char result_str[11];
-    char_array_to_cstring(result, result_size, result_str);
+    char_list_to_cstring(&result, result_str);
     std::cout<<"E="<<result_str<<"\n";
     return 0;
 }
