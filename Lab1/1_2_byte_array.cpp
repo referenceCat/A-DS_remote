@@ -1,6 +1,6 @@
 #include <iostream>
 
-void cstring_to_bite_array(char *set, bool *result) {
+void cstring_to_byte_array(char *set, bool *result) {
     for (int i = 0; i < 10; i++) {
         result[i] = false;
     }
@@ -10,7 +10,7 @@ void cstring_to_bite_array(char *set, bool *result) {
     }
 }
 
-int bite_array_to_cstring(bool *array, char *result) {
+int byte_array_to_cstring(bool *array, char *result) {
     char digits[] = "0123456789";
     int size = 0;
     for (int i = 0; i < 10; i++) {
@@ -24,7 +24,7 @@ int bite_array_to_cstring(bool *array, char *result) {
     return size;
 }
 
-void example_function_for_bite_array(bool *a, bool *b, bool *c, bool *d, bool *result) {
+void example_function(bool *a, bool *b, bool *c, bool *d, bool *result) {
     for (int i = 0; i < 10; i++) {
         result[i] = (a[i] && !(b[i] || c[i])) || d[i];
     }
@@ -50,16 +50,16 @@ int main() {
     bool c[10];
     bool d[10];
 
-    char_set_to_bite_array(input_a, a);
-    char_set_to_bite_array(input_b, b);
-    char_set_to_bite_array(input_c, c);
-    char_set_to_bite_array(input_d, d);
+    cstring_to_byte_array(input_a, a);
+    cstring_to_byte_array(input_b, b);
+    cstring_to_byte_array(input_c, c);
+    cstring_to_byte_array(input_d, d);
 
     bool result[10];
     example_function(a, b, c, d, result);
 
     char result_str[10];
-    bite_array_to_char_set(result, result_str);
+    byte_array_to_cstring(result, result_str);
     std::cout << "E=" << result_str << "\n";
     return 0;
 }
