@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-int cstring_to_char_array(char* str, char* result) {
+int cstring_to_char_array(char *str, char *result) {
     int result_size = 0;
     bool in_result;
 
@@ -29,15 +29,15 @@ bool search(const char *array, int size, char value) {
     return false;
 }
 
-void char_array_to_cstring(char* array, int size, char* result) {
+void char_array_to_cstring(char *array, int size, char *result) {
     for (int i = 0; i < size; i++) {
         result[i] = array[i];
     }
     result[size] = '\0';
 }
 
-int example_function_for_char_array(char* a, int size_a, char* b, int size_b, char* c, int size_c, char* d, int size_d, char* result) {
-    char* digits = "0123456789";
+int example_function_for_char_array(char *a, int size_a, char *b, int size_b, char *c, int size_c, char *d, int size_d, char *result) {
+    char *digits = "0123456789";
     int result_size = 0;
     for (int i = 0; i < 10; i++) {
         if ((search(a, size_a, digits[i]) && !(search(b, size_b, digits[i]) || search(c, size_c, digits[i]))) || search(d, size_d, digits[i])) {
@@ -55,14 +55,14 @@ int main() {
     char input_c[80];
     char input_d[80];
 
-    std::cout<<"A=";
-    std::cin>>input_a;
-    std::cout<<"B=";
-    std::cin>>input_b;
-    std::cout<<"C=";
-    std::cin>>input_c;
-    std::cout<<"D=";
-    std::cin>>input_d;
+    std::cout << "A=";
+    std::cin >> input_a;
+    std::cout << "B=";
+    std::cin >> input_b;
+    std::cout << "C=";
+    std::cin >> input_c;
+    std::cout << "D=";
+    std::cin >> input_d;
 
     char a[10];
     char b[10];
@@ -85,9 +85,8 @@ int main() {
     result_size = example_function_for_char_array(a, a_size, b, b_size, c, c_size, d, d_size, result);
 
 
-
     char result_str[11];
     char_array_to_cstring(result, result_size, result_str);
-    std::cout<<"E="<<result_str<<"\n";
+    std::cout << "E=" << result_str << "\n";
     return 0;
 }
