@@ -1,6 +1,10 @@
 // Created by Mikhail Buyanov on 22/09/2023.
 
+#include <chrono>
+#include <iomanip>
 #include <iostream>
+
+#include "utils/utils.h"
 
 int cstring_to_char_array(char *str, char *result) {
     int result_size = 0;
@@ -49,21 +53,8 @@ int example_function_for_char_array(char *a, int size_a, char *b, int size_b, ch
     return result_size;
 }
 
-int main() {
-    char input_a[80];
-    char input_b[80];
-    char input_c[80];
-    char input_d[80];
 
-    std::cout << "A=";
-    std::cin >> input_a;
-    std::cout << "B=";
-    std::cin >> input_b;
-    std::cout << "C=";
-    std::cin >> input_c;
-    std::cout << "D=";
-    std::cin >> input_d;
-
+void business_logic(char *input_a, char *input_b, char *input_c, char *input_d, char *output_e) {
     char a[10];
     char b[10];
     char c[10];
@@ -82,11 +73,30 @@ int main() {
     char result[10];
     int result_size;
 
+
     result_size = example_function_for_char_array(a, a_size, b, b_size, c, c_size, d, d_size, result);
 
+    char_array_to_cstring(result, result_size, output_e);
+}
+int main() {
+    char input_a[80];
+    char input_b[80];
+    char input_c[80];
+    char input_d[80];
 
-    char result_str[11];
-    char_array_to_cstring(result, result_size, result_str);
+    std::cout << "A=";
+    std::cin >> input_a;
+    std::cout << "B=";
+    std::cin >> input_b;
+    std::cout << "C=";
+    std::cin >> input_c;
+    std::cout << "D=";
+    std::cin >> input_d;
+
+    char result_str[80];
+
+    auto elapsed = utils::measure_execution_time(business_logic, input_a, input_b, input_c, input_d, result_str);
     std::cout << "E=" << result_str << "\n";
+    std::cout << "Execution time: " << std::setprecision(10) << elapsed << "ms\n";
     return 0;
 }

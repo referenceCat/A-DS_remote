@@ -1,6 +1,10 @@
 // Created by Mikhail Buyanov on 22/09/2023.
 
+#include <chrono>
+#include <iomanip>
 #include <iostream>
+
+#include "utils/utils.h"
 
 struct ListNode {
     char digit;
@@ -70,21 +74,7 @@ void example_function_for_char_list(ListHead *a, ListHead *b, ListHead *c, ListH
     }
 }
 
-int main() {
-    char input_a[80];
-    char input_b[80];
-    char input_c[80];
-    char input_d[80];
-
-    std::cout << "A=";
-    std::cin >> input_a;
-    std::cout << "B=";
-    std::cin >> input_b;
-    std::cout << "C=";
-    std::cin >> input_c;
-    std::cout << "D=";
-    std::cin >> input_d;
-
+void business_logic(char *input_a, char *input_b, char *input_c, char *input_d, char *output_str) {
     ListHead a;
     ListHead b;
     ListHead c;
@@ -100,8 +90,28 @@ int main() {
     example_function_for_char_list(&a, &b, &c, &d, &result);
 
 
-    char result_str[11];
-    char_list_to_cstring(&result, result_str);
+    char_list_to_cstring(&result, output_str);
+}
+
+int main() {
+    char input_a[80];
+    char input_b[80];
+    char input_c[80];
+    char input_d[80];
+
+    std::cout << "A=";
+    std::cin >> input_a;
+    std::cout << "B=";
+    std::cin >> input_b;
+    std::cout << "C=";
+    std::cin >> input_c;
+    std::cout << "D=";
+    std::cin >> input_d;
+
+    char result_str[80];
+
+    auto elapsed = utils::measure_execution_time(business_logic, input_a, input_b, input_c, input_d, result_str);
     std::cout << "E=" << result_str << "\n";
+    std::cout << "Execution time: " << std::setprecision(10) << elapsed << "ms\n";
     return 0;
 }
