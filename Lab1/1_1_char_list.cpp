@@ -121,6 +121,7 @@ void run_tests(int count) {
     }
     std::cout << "======================\n";
     std::cout << "Average time: " << std::setprecision(10) << average_time << "ms" << std::endl;
+    std::cout << "Time for all cases: " << std::setprecision(10) << average_time * count << "ms" << std::endl;
 }
 void user_input() {
     char input_a[80];
