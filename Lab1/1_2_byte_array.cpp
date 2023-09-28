@@ -1,6 +1,6 @@
 #include <iostream>
 
-void cstring_to_bite_array(char* set, bool* result) {
+void cstring_to_bite_array(char *set, bool *result) {
     for (int i = 0; i < 10; i++) {
         result[i] = false;
     }
@@ -10,8 +10,8 @@ void cstring_to_bite_array(char* set, bool* result) {
     }
 }
 
-int bite_array_to_cstring(bool* array, char* result) {
-    char digits [] = "0123456789";
+int bite_array_to_cstring(bool *array, char *result) {
+    char digits[] = "0123456789";
     int size = 0;
     for (int i = 0; i < 10; i++) {
         if (array[i]) {
@@ -24,11 +24,10 @@ int bite_array_to_cstring(bool* array, char* result) {
     return size;
 }
 
-void example_function_for_bite_array(bool* a, bool* b, bool* c, bool* d, bool* result) {
+void example_function_for_bite_array(bool *a, bool *b, bool *c, bool *d, bool *result) {
     for (int i = 0; i < 10; i++) {
         result[i] = (a[i] && !(b[i] || c[i])) || d[i];
     }
-
 }
 
 int main() {
@@ -37,14 +36,14 @@ int main() {
     char input_c[80];
     char input_d[80];
 
-    std::cout<<"A=";
-    std::cin>>input_a;
-    std::cout<<"B=";
-    std::cin>>input_b;
-    std::cout<<"C=";
-    std::cin>>input_c;
-    std::cout<<"D=";
-    std::cin>>input_d;
+    std::cout << "A=";
+    std::cin >> input_a;
+    std::cout << "B=";
+    std::cin >> input_b;
+    std::cout << "C=";
+    std::cin >> input_c;
+    std::cout << "D=";
+    std::cin >> input_d;
 
     bool a[10];
     bool b[10];
@@ -61,6 +60,6 @@ int main() {
 
     char result_str[10];
     bite_array_to_char_set(result, result_str);
-    std::cout<<"E="<<result_str<<"\n";
+    std::cout << "E=" << result_str << "\n";
     return 0;
 }

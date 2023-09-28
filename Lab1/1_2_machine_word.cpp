@@ -1,6 +1,6 @@
 #include <iostream>
 
-unsigned short cstring_to_machine_word(const char* str) {
+unsigned short cstring_to_machine_word(const char *str) {
     unsigned short result = 0;
 
     for (int j = 0; str[j]; j++) {
@@ -10,8 +10,8 @@ unsigned short cstring_to_machine_word(const char* str) {
     return result;
 }
 
-int machine_word_to_cstring(unsigned short word, char* result) {
-    char digits [] = "0123456789";
+int machine_word_to_cstring(unsigned short word, char *result) {
+    char digits[] = "0123456789";
     int size = 0;
     for (int i = 0; i < 10; i++) {
         if (word & 1 << i) {
@@ -34,14 +34,14 @@ int main() {
     char input_c[80];
     char input_d[80];
 
-    std::cout<<"A=";
-    std::cin>>input_a;
-    std::cout<<"B=";
-    std::cin>>input_b;
-    std::cout<<"C=";
-    std::cin>>input_c;
-    std::cout<<"D=";
-    std::cin>>input_d;
+    std::cout << "A=";
+    std::cin >> input_a;
+    std::cout << "B=";
+    std::cin >> input_b;
+    std::cout << "C=";
+    std::cin >> input_c;
+    std::cout << "D=";
+    std::cin >> input_d;
 
     unsigned short a = cstring_to_machine_word(input_a);
     unsigned short b = cstring_to_machine_word(input_b);
@@ -53,6 +53,6 @@ int main() {
 
     char result_str[10];
     machine_word_to_cstring(result, result_str);
-    std::cout<<"E="<<result_str<<"\n";
+    std::cout << "E=" << result_str << "\n";
     return 0;
 }
