@@ -5,7 +5,7 @@
 #include "utils/generator.h"
 #include "utils/utils.h"
 
-void cstring_to_byte_array(char *set, bool *result) {
+void cstring_to_bit_array(char *set, bool *result) {
     for (int i = 0; i < 10; i++) {
         result[i] = false;
     }
@@ -15,7 +15,7 @@ void cstring_to_byte_array(char *set, bool *result) {
     }
 }
 
-int byte_array_to_cstring(bool *array, char *result) {
+int bit_array_to_cstring(bool *array, char *result) {
     char digits[] = "0123456789";
     int size = 0;
     for (int i = 0; i < 10; i++) {
@@ -41,16 +41,16 @@ void business_logic(char *input_a, char *input_b, char *input_c, char *input_d, 
     bool c[10];
     bool d[10];
 
-    cstring_to_byte_array(input_a, a);
-    cstring_to_byte_array(input_b, b);
-    cstring_to_byte_array(input_c, c);
-    cstring_to_byte_array(input_d, d);
+    cstring_to_bit_array(input_a, a);
+    cstring_to_bit_array(input_b, b);
+    cstring_to_bit_array(input_c, c);
+    cstring_to_bit_array(input_d, d);
 
     bool result[10];
 
     example_function(a, b, c, d, result);
 
-    byte_array_to_cstring(result, output_str);
+    bit_array_to_cstring(result, output_str);
 }
 
 

@@ -8,8 +8,8 @@ add_executable(char_list
 )
 
 
-add_executable(byte_array
-        1_2_byte_array.cpp
+add_executable(bit_array
+        1_2_bit_array.cpp
 )
 
 add_executable(machine_word
