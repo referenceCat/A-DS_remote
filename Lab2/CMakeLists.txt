@@ -1,4 +1,4 @@
-add_executable(char_array_set CharArraySet.cpp)
-add_executable(char_list_set CharListSet.cpp)
-add_executable(bit_array_set BitArraySet.cpp)
-add_executable(machine_word_set MachineWordSet.cpp)
+
+add_subdirectory(src)
+add_subdirectory(tests)
+
