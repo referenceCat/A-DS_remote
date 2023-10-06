@@ -10,4 +10,4 @@ project(A_DS_remote)
 set(CMAKE_CXX_STANDARD 17)
 
 # here we specify the directories for each lab
-add_subdirectory(Lab1)
+add_subdirectory(Lab2)
