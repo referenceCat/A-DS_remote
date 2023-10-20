@@ -27,7 +27,7 @@ public: // Открытая часть — функции для работы с
 
     friend std::ostream &operator<<(std::ostream &, const BitArraySet &); // вывод множества на экран
 private:
-    int bit_array_to_cstring(char *result) const;
+    int to_cstring(char *result) const;
 };
 
 

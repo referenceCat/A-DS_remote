@@ -31,7 +31,7 @@ public: // Открытая часть — функции для работы с
 
     friend std::ostream &operator<<(std::ostream &, const CharListSet &); // вывод множества на экран
 private:
-    int list_to_cstring(char* result)const;
+    int to_cstring(char* result)const;
 };
 
 
