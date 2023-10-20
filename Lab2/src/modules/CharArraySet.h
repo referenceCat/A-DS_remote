@@ -5,6 +5,7 @@
 #ifndef A_DS_REMOTE_CHARARRAYSET_H
 #define A_DS_REMOTE_CHARARRAYSET_H
 
+#include <iostream>
 
 class CharArraySet {
 private: // Закрытая часть класса — данные
@@ -23,6 +24,8 @@ public: // Открытая часть — функции для работы с
     CharArraySet(const CharArraySet &); // конструктор копии
     CharArraySet operator=(const CharArraySet &); // оператор присваивания
     ~CharArraySet() { delete[] char_array; } // деструкторконстру
+
+    friend std::ostream &operator<<(std::ostream &, const CharArraySet &); // вывод множества на экран
 };
 
 
