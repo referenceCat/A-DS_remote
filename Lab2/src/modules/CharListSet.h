@@ -5,6 +5,7 @@
 #ifndef A_DS_REMOTE_CHARLISTSET_H
 #define A_DS_REMOTE_CHARLISTSET_H
 
+#include <iostream>
 
 class CharListSet {
 private:
@@ -27,6 +28,10 @@ public: // Открытая часть — функции для работы с
     CharListSet(const CharListSet &); // конструктор копии
     CharListSet operator=(const CharListSet &); // оператор присваивания
     ~CharListSet(); // деструкторконстру
+
+    friend std::ostream &operator<<(std::ostream &, const CharListSet &); // вывод множества на экран
+private:
+    int list_to_cstring(char* result)const;
 };
 
 
