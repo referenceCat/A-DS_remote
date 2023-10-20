@@ -5,6 +5,7 @@
 #ifndef A_DS_REMOTE_MACHINEWORDSET_H
 #define A_DS_REMOTE_MACHINEWORDSET_H
 
+#include <iostream>
 
 class MachineWordSet {
 private:
@@ -23,6 +24,10 @@ public: // Открытая часть — функции для работы с
     MachineWordSet(const MachineWordSet &); // конструктор копии
     MachineWordSet operator=(const MachineWordSet &); // оператор присваивания
     ~MachineWordSet(); // деструкторконстру
+
+    friend std::ostream &operator<<(std::ostream &, const MachineWordSet &); // вывод множества на экран
+private:
+    int to_cstring(char* result) const;
 };
 
 
