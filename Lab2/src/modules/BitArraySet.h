@@ -6,6 +6,8 @@
 #define A_DS_REMOTE_BITARRAYSET_H
 
 
+#include <iostream>
+
 class BitArraySet {
 private: // Закрытая часть класса — данные
     static int N, cnt; // мощность универсума и счётчик множеств
@@ -16,13 +18,16 @@ public: // Открытая часть — функции для работы с
     BitArraySet operator|(const BitArraySet &) const; // объединение
     BitArraySet operator&(const BitArraySet &) const; // пересечение
     BitArraySet operator~() const; // дополнение до универсума
-    void Show(); // вывод множества на экран
     int power() { return n; } // получение мощности
     BitArraySet(char); // конструктор множества
     BitArraySet(); // ещё конструктор — по умолчанию
     BitArraySet(const BitArraySet &); // конструктор копии
     BitArraySet operator=(const BitArraySet &); // оператор присваивания
     ~BitArraySet() { delete[] bit_array; } // деструкторконстру
+
+    friend std::ostream &operator<<(std::ostream &, const BitArraySet &); // вывод множества на экран
+private:
+    int bit_array_to_cstring(char *result) const;
 };
 
 
