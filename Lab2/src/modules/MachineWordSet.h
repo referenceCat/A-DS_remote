@@ -4,6 +4,7 @@
 
 #ifndef A_DS_REMOTE_MACHINEWORDSET_H
 #define A_DS_REMOTE_MACHINEWORDSET_H
+#include <iostream>
 
 
 class MachineWordSet {
