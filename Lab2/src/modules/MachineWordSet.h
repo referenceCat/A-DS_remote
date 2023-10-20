@@ -25,5 +25,4 @@ public: // Открытая часть — функции для работы с
     ~MachineWordSet(); // деструкторконстру
 };
 
-
 #endif //A_DS_REMOTE_MACHINEWORDSET_H
