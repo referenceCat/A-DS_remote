@@ -3,3 +3,6 @@
 //
 
 #include "CharArraySet.h"
+std::ostream &operator<<(std::ostream &o, const CharArraySet &object) {
+    return o << object.char_array;
+}
