@@ -12,27 +12,32 @@ private:
     struct Node {
         Node *next;
         char value;
-    };// Закрытая часть класса — данные
-    static int N, cnt; // мощность универсума и счётчик множеств
-    int n;// мощность множества
+    };                // Закрытая часть класса — данные
+    static int N, cnt;// мощность универсума и счётчик множеств
+    int n;            // мощность множества
     char S;
-    Node *first; // тег и память для множества
-public: // Открытая часть — функции для работы с множеством
-    CharListSet operator|(const CharListSet &) const; // объединение
-    CharListSet operator&(const CharListSet &) const; // пересечение
-    CharListSet operator~() const; // дополнение до универсума
-    void Show(); // вывод множества на экран
-    int power() { return n; } // получение мощности
-    CharListSet(char); // конструктор множества
-    CharListSet(); // ещё конструктор — по умолчанию
-    CharListSet(const CharListSet &); // конструктор копии
-    CharListSet operator=(const CharListSet &); // оператор присваивания
-    ~CharListSet(); // деструкторконстру
+    Node *first;// тег и память для множества
 
-    friend std::ostream &operator<<(std::ostream &, const CharListSet &); // вывод множества на экран
+
+    void add(const char &value);
+
+public:                                                   // Открытая часть — функции для работы с множеством
+    CharListSet operator|(const CharListSet &other) const;// объединение
+    CharListSet operator&(const CharListSet &other) const;// пересечение
+    CharListSet operator~() const;                        // дополнение до универсума
+    int power() { return n; }                             // получение мощности
+    explicit CharListSet(char);                           // конструктор множества
+    CharListSet();                                        // ещё конструктор — по умолчанию
+    CharListSet(const CharListSet &other);                // конструктор копии
+    CharListSet(CharListSet &&other) noexcept;
+    CharListSet &operator=(const CharListSet &other);// оператор присваивания
+    CharListSet &operator=(CharListSet &&other) noexcept;
+    ~CharListSet();// деструкторконстру
+
+    friend std::ostream &operator<<(std::ostream &, const CharListSet &other);// вывод множества на экран
 private:
-    int to_cstring(char* result)const;
+    int to_cstring(char *result) const;
 };
 
 
-#endif //A_DS_REMOTE_CHARLISTSET_H
+#endif//A_DS_REMOTE_CHARLISTSET_H
