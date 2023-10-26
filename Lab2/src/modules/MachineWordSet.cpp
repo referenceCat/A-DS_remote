@@ -4,61 +4,52 @@
 
 #include "MachineWordSet.h"
 
-MachineWordSet MachineWordSet::operator|(const MachineWordSet & other) const {
-    std::cout<<"called MachineWordSet::operator|" << std::endl;
+MachineWordSet MachineWordSet::operator|(const MachineWordSet &other) const {
+    std::cout << "called MachineWordSet::operator|" << std::endl;
     MachineWordSet set;
     set.data = data | other.data;
     return set;
 }
 
-MachineWordSet MachineWordSet::operator&(const MachineWordSet & other) const {
-    std::cout<<"called MachineWordSet::operator&" << std::endl;
+MachineWordSet MachineWordSet::operator&(const MachineWordSet &other) const {
+    std::cout << "called MachineWordSet::operator&" << std::endl;
     MachineWordSet set;
     set.data = data & other.data;
     return set;
 }
 
 MachineWordSet MachineWordSet::operator~() const {
-    std::cout<<"called MachineWordSet::operator~" << std::endl;
+    std::cout << "called MachineWordSet::operator~" << std::endl;
     MachineWordSet set;
     set.data = ~data;
     return set;
 }
 
-void MachineWordSet::Show() {
 
-    std::cout<<"called MachineWordSet::Show" << std::endl;
-    static constexpr char digits[] = "0123456789";
-    for (int i = 0; i < 10; i++) {
-        if (data & 1 << i) {
-            std::cout << digits[i];
-        }
-    }
-}
-
-MachineWordSet::MachineWordSet(char): S('A' + cnt++), n(0), data(0) {
-    std::cout<<"called MachineWordSet::MachineWordSet(char)" << std::endl;
+MachineWordSet::MachineWordSet(char) : S('A' + cnt++), n(0), data(0) {
+    std::cout << "called MachineWordSet::MachineWordSet(char)" << std::endl;
     for (int i = 0; i < N; ++i) {
         data |= (rand() % 2) << i;
     }
 }
 
-MachineWordSet::MachineWordSet(): S('A' + cnt++), n(0), data(0) {
-    std::cout<<"called MachineWordSet::MachineWordSet()" << std::endl;
+MachineWordSet::MachineWordSet() : S('A' + cnt++), n(0), data(0) {
+    std::cout << "called MachineWordSet::MachineWordSet()" << std::endl;
 }
 
-MachineWordSet::MachineWordSet(const MachineWordSet & other) {
-    std::cout<<"called MachineWordSet::MachineWordSet(const MachineWordSet &)" << std::endl;
-    data = other.data;
+MachineWordSet::MachineWordSet(const MachineWordSet &other) : data(other.data), n(other.n), S('A' + cnt++) {
+    std::cout << "called MachineWordSet::MachineWordSet(const MachineWordSet &)" << std::endl;
 }
 
-MachineWordSet MachineWordSet::operator=(const MachineWordSet &) {
-    return MachineWordSet();
+MachineWordSet &MachineWordSet::operator=(const MachineWordSet &other) {
+    std::cout << "called MachineWordSet::operator=(const MachineWordSet &)" << std::endl;
+    if (this != &other) {
+        n = other.n;
+        data = other.data;
+    }
+    return *this;
 }
 
-MachineWordSet::~MachineWordSet() {
-
-}
 
 int MachineWordSet::to_cstring(char *result) const {
     static constexpr char digits[] = "0123456789";
@@ -80,4 +71,18 @@ std::ostream &operator<<(std::ostream &o, const MachineWordSet &object) {
     o << result;
     return o;
 }
-
+MachineWordSet::MachineWordSet(MachineWordSet &&other) noexcept {
+    std::cout << "called MachineWordSet::MachineWordSet(MachineWordSet &&)" << std::endl;
+    data = other.data;
+    n = other.n;
+    S = other.S;
+}
+MachineWordSet &MachineWordSet::operator=(MachineWordSet &&other) noexcept {
+    std::cout << "called MachineWordSet::operator=(MachineWordSet &&)" << std::endl;
+    if (this != &other) {
+        n = other.n;
+        data = other.data;
+        S = 'A' + cnt++;
+    }
+    return *this;
+}
