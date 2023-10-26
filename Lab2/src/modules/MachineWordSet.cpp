@@ -28,7 +28,7 @@ MachineWordSet MachineWordSet::operator~() const {
 void MachineWordSet::Show() {
 
     std::cout<<"called MachineWordSet::Show" << std::endl;
-    char digits[] = "0123456789";
+    static constexpr char digits[] = "0123456789";
     for (int i = 0; i < 10; i++) {
         if (data & 1 << i) {
             std::cout << digits[i];
