@@ -15,8 +15,7 @@ void machineWord();
 int main() {
 
 //    bitArray();
-
-    charList();
+charList();
 //    machineWord();
 //    charArray();
 
