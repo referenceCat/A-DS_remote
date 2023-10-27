@@ -3,6 +3,7 @@
 //
 
 #include "CharListSet.h"
+#include <cstring>
 
 
 int CharListSet::N = 10;
@@ -142,4 +143,13 @@ CharListSet &CharListSet::operator=(const CharListSet &other) {
         }
     }
     return *this;
+}
+
+
+CharListSet::CharListSet(char *str) : S('A' + cnt++), n(0), first(nullptr) {
+    for (int i = 0; i < strlen(str); ++i) {
+        add(str[i]-'0');
+        n++;
+    }
+    std::cout<<*this<<std::endl;
 }

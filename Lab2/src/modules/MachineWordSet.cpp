@@ -3,6 +3,7 @@
 //
 
 #include "MachineWordSet.h"
+#include <cstring>
 
 
 int MachineWordSet::N = 10;
@@ -93,4 +94,18 @@ MachineWordSet &MachineWordSet::operator=(MachineWordSet &&other) noexcept {
 }
 MachineWordSet::~MachineWordSet() {
     std::cout << S << " MachineWordSet::~MachineWordSet()" << std::endl;
+}
+
+unsigned short cstring_to_machine_word(const char *str) {
+    unsigned short result = 0;
+
+    for (int j = 0; str[j]; j++) {
+        result |= 1 << (str[j] - '0');
+    }
+
+    return result;
+}
+MachineWordSet::MachineWordSet(char *str): S('A'+cnt++) {
+    n = strlen(str);
+    data = cstring_to_machine_word(str);
 }

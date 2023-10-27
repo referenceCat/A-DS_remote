@@ -28,6 +28,7 @@ public:                                                   // Открытая ч
     int power() { return n; }                             // получение мощности
     explicit CharListSet(char);                           // конструктор множества
     CharListSet();                                        // ещё конструктор — по умолчанию
+    CharListSet(char* str);
     CharListSet(const CharListSet &other);                // конструктор копии
     CharListSet(CharListSet &&other) noexcept;
     CharListSet &operator=(const CharListSet &other);// оператор присваивания

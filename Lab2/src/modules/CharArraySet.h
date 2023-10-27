@@ -27,6 +27,7 @@ public:                                                     // Открытая 
     CharArraySet &operator=(CharArraySet &&other) noexcept;
     CharArraySet(CharArraySet &&other) noexcept;
     ~CharArraySet();
+    explicit CharArraySet(char*str);
 
     friend std::ostream &operator<<(std::ostream &, const CharArraySet &other);// вывод множества на экран
 };

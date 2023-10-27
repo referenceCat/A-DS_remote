@@ -141,3 +141,28 @@ CharArraySet::~CharArraySet() {
     std::cout << S << " CharArraySet::~CharArraySet()\n";
     delete[] char_array;
 }
+
+
+int cstring_to_char_array(char *str, char *result) {
+    int result_size = 0;
+    bool in_result;
+
+    for (int i = 0; str[i]; i++) {
+        in_result = false;
+        for (int j = 0; j < result_size; j++)
+            if (result[j] == str[i]) {
+                in_result = true;
+                break;
+            }
+        if (!in_result) {
+            result[result_size] = str[i];
+            result_size++;
+        }
+    }
+
+    return result_size;
+}
+
+CharArraySet::CharArraySet(char *str) : n(0), S('A' + cnt++) {
+
+}

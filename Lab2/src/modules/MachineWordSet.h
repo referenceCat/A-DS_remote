@@ -22,6 +22,7 @@ public:                                                         // Открыт�
     int power() { return n; }                                   // получение мощности
     explicit MachineWordSet(char);                              // конструктор множества
     MachineWordSet();                                           // ещё конструктор — по умолчанию
+    MachineWordSet(char* str);
     MachineWordSet(const MachineWordSet &other);                // конструктор копии
     MachineWordSet &operator=(const MachineWordSet &other);     // оператор присваивания
     MachineWordSet(MachineWordSet &&other) noexcept;            // конструктор перемещения
