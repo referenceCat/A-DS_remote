@@ -20,12 +20,12 @@ public:                                                         // Открыт�
     MachineWordSet operator&(const MachineWordSet &other) const;// пересечение
     MachineWordSet operator~() const;                           // дополнение до универсума
     int power() { return n; }                                   // получение мощности
-    explicit MachineWordSet(char);                                       // конструктор множества
+    explicit MachineWordSet(char);                              // конструктор множества
     MachineWordSet();                                           // ещё конструктор — по умолчанию
     MachineWordSet(const MachineWordSet &other);                // конструктор копии
-    MachineWordSet& operator=(const MachineWordSet &other);      // оператор присваивания
-    MachineWordSet(MachineWordSet &&other)noexcept;                      // конструктор перемещения
-    MachineWordSet& operator=(MachineWordSet &&other)noexcept;         // оператор перемещения
+    MachineWordSet &operator=(const MachineWordSet &other);     // оператор присваивания
+    MachineWordSet(MachineWordSet &&other) noexcept;            // конструктор перемещения
+    MachineWordSet &operator=(MachineWordSet &&other) noexcept; // оператор перемещения
 
     friend std::ostream &operator<<(std::ostream &stream, const MachineWordSet &object);// вывод множества на экран
 private:

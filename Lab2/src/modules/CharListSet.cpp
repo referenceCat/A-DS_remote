@@ -4,22 +4,27 @@
 
 #include "CharListSet.h"
 
+
+int CharListSet::N = 10;
+int CharListSet::cnt = 0;
+
 std::ostream &operator<<(std::ostream &o, const CharListSet &object) {
-    char result[11];
+    char result[11] = {0};
     object.to_cstring(result);
-    o << result;
+    o << "[" << object.S << "] " << result;
     return o;
 }
 int CharListSet::to_cstring(char *result) const {
     // TODO: test this for nullptr and iteration
     int i = 0;
-    for (Node *node = first; node && node->next; node = node->next) {
-        result[i] = node->value;
+    for (const Node *node = first; node && node->next; node = node->next) {
+        result[i] = node->value + '0';
         i++;
     }
-    result[i] = '\0';
+        result[i] = '\0';
 }
 CharListSet CharListSet::operator|(const CharListSet &other) const {
+    std::cout << "operator|(const CharListSet &other) " << std::endl;
     CharListSet result(*this);
     for (Node *node = other.first; node && node->next; node = node->next) {
         bool found = false;
@@ -38,14 +43,17 @@ void CharListSet::add(const char &value) {
     Node *node = new Node{nullptr, value};
     if (!first) {
         first = node;
+    } else {
+        Node *iter = first;
+
+        while (iter && iter->next) {
+            iter = iter->next;
+        }
+        iter->next = node;
     }
-    Node *iter = first;
-    while (iter && iter->next) {
-        iter = iter->next;
-    }
-    iter->next = node;
 }
 CharListSet CharListSet::operator&(const CharListSet &other) const {
+    std::cout << "operator&(const CharListSet &other) " << std::endl;
     CharListSet result;
     for (Node *node = other.first; node && node->next; node = node->next) {
         bool found = false;
@@ -62,6 +70,7 @@ CharListSet CharListSet::operator&(const CharListSet &other) const {
     return result;
 }
 CharListSet CharListSet::operator~() const {
+    std::cout << "operator~()" << std::endl;
     CharListSet result;
     for (int i = 0; i < 9; ++i) {
         bool found = false;
@@ -78,26 +87,40 @@ CharListSet CharListSet::operator~() const {
     return result;
 }
 CharListSet::CharListSet(char) : S('A' + cnt++), n(0) {
+    std::cout << "CharListSet::CharListSet(char)" << std::endl;
+    first = nullptr;
     for (int i = 0; i < 9; ++i) {
         if (rand() % 2) {
             add(i);
         }
     }
+    std::cout << *this << std::endl;
 }
 CharListSet::CharListSet() : S('A' + cnt++), n(0) {
+    std::cout << "CharListSet::CharListSet()" << std::endl;
+    for (int i = 0; i < 9; ++i) {
+        if (rand() % 2) {
+            add(i);
+            n++;
+        }
+    }
+    std::cout << *this << std::endl;
 }
 CharListSet::CharListSet(const CharListSet &other) : S('A' + cnt++), n(other.n) {
+    std::cout << "CharListSet::CharListSet(const CharListSet &other)" << std::endl;
     for (Node *node = other.first; node && node->next; node = node->next) {
         add(node->value);
     }
 }
 CharListSet::CharListSet(CharListSet &&other) noexcept {
+    std::cout << "CharListSet::CharListSet(CharListSet &&other) noexcept" << std::endl;
     S = other.S;
     n = other.n;
     first = other.first;
     other.first = nullptr;
 }
 CharListSet &CharListSet::operator=(CharListSet &&other) noexcept {
+    std::cout << "CharListSet &CharListSet::operator=(CharListSet &&other) noexcept" << std::endl;
     if (this != &other) {
         S = other.S;
         n = other.n;
@@ -107,12 +130,14 @@ CharListSet &CharListSet::operator=(CharListSet &&other) noexcept {
     return *this;
 }
 CharListSet::~CharListSet() {
+    std::cout << "CharListSet::~CharListSet()" << std::endl;
     for (Node *node = first; node; node = first) {
         first = node->next;
         delete node;
     }
 }
 CharListSet &CharListSet::operator=(const CharListSet &other) {
+    std::cout << "CharListSet &CharListSet::operator=(const CharListSet &other)" << std::endl;
     if (this != &other) {
         n = other.n;
         for (Node *node = other.first; node && node->next; node = node->next) {
