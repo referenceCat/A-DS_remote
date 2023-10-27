@@ -26,6 +26,7 @@ public:                                                         // Открыт�
     MachineWordSet &operator=(const MachineWordSet &other);     // оператор присваивания
     MachineWordSet(MachineWordSet &&other) noexcept;            // конструктор перемещения
     MachineWordSet &operator=(MachineWordSet &&other) noexcept; // оператор перемещения
+    ~MachineWordSet();
 
     friend std::ostream &operator<<(std::ostream &stream, const MachineWordSet &object);// вывод множества на экран
 private:

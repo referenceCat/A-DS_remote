@@ -91,3 +91,6 @@ MachineWordSet &MachineWordSet::operator=(MachineWordSet &&other) noexcept {
     }
     return *this;
 }
+MachineWordSet::~MachineWordSet() {
+    std::cout << S << " MachineWordSet::~MachineWordSet()" << std::endl;
+}

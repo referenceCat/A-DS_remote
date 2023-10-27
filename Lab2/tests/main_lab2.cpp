@@ -15,8 +15,11 @@ void machineWord();
 int main() {
 
     bitArray();
+    std::cout << "==============================================" << std::endl;
     charList();
+    std::cout << "==============================================" << std::endl;
     machineWord();
+    std::cout << "==============================================" << std::endl;
     charArray();
 
     return 0;

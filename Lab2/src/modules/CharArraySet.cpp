@@ -16,13 +16,13 @@ std::ostream &operator<<(std::ostream &o, const CharArraySet &object) {
     return o;
 }
 CharArraySet CharArraySet::operator&(const CharArraySet &other) const {
-    std::cout << "CharArraySet::operator&(const CharArraySet &other)\n";
+    std::cout << S << " CharArraySet::operator&(const CharArraySet &other)\n";
     CharArraySet tmp(*this);
     auto res = (tmp &= other);
     return res;
 }
 CharArraySet CharArraySet::operator&=(const CharArraySet &other) {
-    std::cout << "CharArraySet::operator&=(const CharArraySet &other)\n";
+    std::cout << S << " CharArraySet::operator&=(const CharArraySet &other)\n";
     CharArraySet tmp(*this);
     n = 0;
     for (int i = 0; i < tmp.n; ++i) {
@@ -35,13 +35,13 @@ CharArraySet CharArraySet::operator&=(const CharArraySet &other) {
     return *this;
 }
 CharArraySet CharArraySet::operator|(const CharArraySet &other) const {
-    std::cout << "CharArraySet::operator|(const CharArraySet &other)\n";
+    std::cout << S << " CharArraySet::operator|(const CharArraySet &other)\n";
     CharArraySet tmp(*this);
     auto res = (tmp |= other);
     return res;
 }
 CharArraySet CharArraySet::operator|=(const CharArraySet &other) {
-    std::cout << "CharArraySet::operator|=(const CharArraySet &other)\n";
+    std::cout << S << " CharArraySet::operator|=(const CharArraySet &other)\n";
     for (int i = 0; i < other.n; ++i) {
         bool found = false;
         for (int j = 0; j < this->n; ++j) {
@@ -56,7 +56,7 @@ CharArraySet CharArraySet::operator|=(const CharArraySet &other) {
     return *this;
 }
 CharArraySet CharArraySet::operator~() const {
-    std::cout << "CharArraySet::operator~()\n";
+    std::cout << S << " CharArraySet::operator~()\n";
     CharArraySet tmp;
     for (int i = 0; i < N; ++i) {
         bool found = false;
@@ -74,7 +74,7 @@ CharArraySet CharArraySet::operator~() const {
     return tmp;
 }
 CharArraySet::CharArraySet() : n(0), S('A' + cnt++) {
-    std::cout << "CharArraySet::CharArraySet()\n";
+    std::cout << S << " CharArraySet::CharArraySet()\n";
     char_array = new char[N + 1];
     char_array[n++] = 0;
 }
@@ -102,20 +102,19 @@ char *generate_char_set(size_t size, int *generated) {
 }
 
 CharArraySet::CharArraySet(char) : S('A' + cnt++), n(0) {
-    std::cout << "CharArraySet::CharArraySet(char)\n";
+    std::cout << S << " CharArraySet::CharArraySet(char)\n";
     // fill randomly
 
     char_array = generate_char_set(10, &n);
-    std::cout << "Generated set: " << S << "\n";
     std::cout << *this << std::endl;
 }
 CharArraySet::CharArraySet(const CharArraySet &other) : S('A' + cnt++), n(other.n) {
-    std::cout << "CharArraySet::CharArraySet(const CharArraySet &other)\n";
+    std::cout << S << " CharArraySet::CharArraySet(const CharArraySet &other)\n";
     char_array = new char[N + 1];
     std::memcpy(char_array, other.char_array, N);
 }
 CharArraySet &CharArraySet::operator=(const CharArraySet &other) {
-    std::cout << "CharArraySet::operator=(const CharArraySet &other)\n";
+    std::cout << S << " CharArraySet::operator=(const CharArraySet &other)\n";
     if (this != &other) {
         n = other.n;
         std::memcpy(char_array, other.char_array, N);
@@ -124,12 +123,12 @@ CharArraySet &CharArraySet::operator=(const CharArraySet &other) {
     return *this;
 }
 CharArraySet::CharArraySet(CharArraySet &&other) noexcept : S(other.S), n(other.n) {
-    std::cout << "CharArraySet::CharArraySet(CharArraySet &&other)\n";
+    std::cout << S << " CharArraySet::CharArraySet(CharArraySet &&other)\n";
     char_array = other.char_array;
     other.char_array = nullptr;
 }
 CharArraySet &CharArraySet::operator=(CharArraySet &&other) noexcept {
-    std::cout << "CharArraySet::operator=(CharArraySet &&other)\n";
+    std::cout << S << " CharArraySet::operator=(CharArraySet &&other)\n";
     if (this != &other) {
         n = other.n;
         std::memcpy(char_array, other.char_array, n);
