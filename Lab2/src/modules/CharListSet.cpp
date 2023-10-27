@@ -21,10 +21,10 @@ int CharListSet::to_cstring(char *result) const {
         result[i] = node->value + '0';
         i++;
     }
-        result[i] = '\0';
+    result[i] = '\0';
 }
 CharListSet CharListSet::operator|(const CharListSet &other) const {
-    std::cout << "operator|(const CharListSet &other) " << std::endl;
+    std::cout << S << "operator|(const CharListSet &other) " << std::endl;
     CharListSet result(*this);
     for (Node *node = other.first; node; node = node->next) {
         bool found = false;
@@ -53,7 +53,7 @@ void CharListSet::add(const char &value) {
     }
 }
 CharListSet CharListSet::operator&(const CharListSet &other) const {
-    std::cout << "operator&(const CharListSet &other) " << std::endl;
+    std::cout << S << " operator&(const CharListSet &other) " << std::endl;
     CharListSet result;
     for (Node *node = other.first; node; node = node->next) {
         bool found = false;
@@ -70,7 +70,7 @@ CharListSet CharListSet::operator&(const CharListSet &other) const {
     return result;
 }
 CharListSet CharListSet::operator~() const {
-    std::cout << "operator~()" << std::endl;
+    std::cout << S << " operator~()" << std::endl;
     CharListSet result;
     for (int i = 0; i < 10; ++i) {
         bool found = false;
@@ -87,7 +87,7 @@ CharListSet CharListSet::operator~() const {
     return result;
 }
 CharListSet::CharListSet(char) : S('A' + cnt++), n(0) {
-    std::cout << "CharListSet::CharListSet(char)" << std::endl;
+    std::cout << S << " CharListSet::CharListSet(char)" << std::endl;
     first = nullptr;
     for (int i = 0; i < 9; ++i) {
         if (rand() % 2) {
@@ -97,26 +97,26 @@ CharListSet::CharListSet(char) : S('A' + cnt++), n(0) {
     std::cout << *this << std::endl;
 }
 CharListSet::CharListSet() : S('A' + cnt++), n(0) {
-    std::cout << "CharListSet::CharListSet()" << std::endl;
+    std::cout << S << " CharListSet::CharListSet()" << std::endl;
     first = nullptr;
     std::cout << *this << std::endl;
 }
 CharListSet::CharListSet(const CharListSet &other) : S('A' + cnt++), n(other.n) {
-    std::cout << "CharListSet::CharListSet(const CharListSet &other)" << std::endl;
+    std::cout << S << " CharListSet::CharListSet(const CharListSet &other)" << std::endl;
     this->first = nullptr;
     for (Node *node = other.first; node; node = node->next) {
         add(node->value);
     }
 }
 CharListSet::CharListSet(CharListSet &&other) noexcept {
-    std::cout << "CharListSet::CharListSet(CharListSet &&other) noexcept" << std::endl;
+    std::cout << S << " CharListSet::CharListSet(CharListSet &&other) noexcept" << std::endl;
     S = other.S;
     n = other.n;
     first = other.first;
     other.first = nullptr;
 }
 CharListSet &CharListSet::operator=(CharListSet &&other) noexcept {
-    std::cout << "CharListSet &CharListSet::operator=(CharListSet &&other) noexcept" << std::endl;
+    std::cout << S << " CharListSet &CharListSet::operator=(CharListSet &&other) noexcept" << std::endl;
     if (this != &other) {
         S = other.S;
         n = other.n;
@@ -126,14 +126,14 @@ CharListSet &CharListSet::operator=(CharListSet &&other) noexcept {
     return *this;
 }
 CharListSet::~CharListSet() {
-    std::cout << "CharListSet::~CharListSet() " << S << std::endl;
+    std::cout << S << " CharListSet::~CharListSet() " << std::endl;
     for (Node *node = first; node; node = first) {
         first = node->next;
         delete node;
     }
 }
 CharListSet &CharListSet::operator=(const CharListSet &other) {
-    std::cout << "CharListSet &CharListSet::operator=(const CharListSet &other)" << std::endl;
+    std::cout << S << " CharListSet &CharListSet::operator=(const CharListSet &other)" << std::endl;
     if (this != &other) {
         n = other.n;
         first = nullptr;

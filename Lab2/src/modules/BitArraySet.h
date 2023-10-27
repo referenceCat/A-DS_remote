@@ -25,7 +25,7 @@ public:                                                   // Открытая ч
     BitArraySet(BitArraySet &&other) noexcept;
     BitArraySet &operator=(const BitArraySet &other);// оператор присваивания
     BitArraySet &operator=(BitArraySet &&other) noexcept;
-    ~BitArraySet() { delete[] bit_array; }
+    ~BitArraySet();
 
     friend std::ostream &operator<<(std::ostream &stream, const BitArraySet &other);// вывод множества на экран
 private:

@@ -9,21 +9,21 @@ int MachineWordSet::N = 10;
 int MachineWordSet::cnt = 0;
 
 MachineWordSet MachineWordSet::operator|(const MachineWordSet &other) const {
-    std::cout << "MachineWordSet::operator|" << std::endl;
+    std::cout << S << " MachineWordSet::operator|" << std::endl;
     MachineWordSet set;
     set.data = data | other.data;
     return set;
 }
 
 MachineWordSet MachineWordSet::operator&(const MachineWordSet &other) const {
-    std::cout << "MachineWordSet::operator&" << std::endl;
+    std::cout << S << " MachineWordSet::operator&" << std::endl;
     MachineWordSet set;
     set.data = data & other.data;
     return set;
 }
 
 MachineWordSet MachineWordSet::operator~() const {
-    std::cout << "MachineWordSet::operator~" << std::endl;
+    std::cout << S << " MachineWordSet::operator~" << std::endl;
     MachineWordSet set;
     set.data = ~data;
     return set;
@@ -31,7 +31,7 @@ MachineWordSet MachineWordSet::operator~() const {
 
 
 MachineWordSet::MachineWordSet(char) : S('A' + cnt++), n(0), data(0) {
-    std::cout << "MachineWordSet::MachineWordSet(char)" << std::endl;
+    std::cout << S << " MachineWordSet::MachineWordSet(char)" << std::endl;
     for (int i = 0; i < N; ++i) {
         data |= (rand() % 2) << i;
     }
@@ -39,15 +39,15 @@ MachineWordSet::MachineWordSet(char) : S('A' + cnt++), n(0), data(0) {
 }
 
 MachineWordSet::MachineWordSet() : S('A' + cnt++), n(0), data(0) {
-    std::cout << "MachineWordSet::MachineWordSet()" << std::endl;
+    std::cout << S << " MachineWordSet::MachineWordSet()" << std::endl;
 }
 
 MachineWordSet::MachineWordSet(const MachineWordSet &other) : data(other.data), n(other.n), S('A' + cnt++) {
-    std::cout << "MachineWordSet::MachineWordSet(const MachineWordSet &)" << std::endl;
+    std::cout << S << " MachineWordSet::MachineWordSet(const MachineWordSet &)" << std::endl;
 }
 
 MachineWordSet &MachineWordSet::operator=(const MachineWordSet &other) {
-    std::cout << "MachineWordSet::operator=(const MachineWordSet &)" << std::endl;
+    std::cout << S << " MachineWordSet::operator=(const MachineWordSet &)" << std::endl;
     if (this != &other) {
         n = other.n;
         data = other.data;
@@ -77,13 +77,13 @@ std::ostream &operator<<(std::ostream &o, const MachineWordSet &object) {
     return o;
 }
 MachineWordSet::MachineWordSet(MachineWordSet &&other) noexcept {
-    std::cout << "MachineWordSet::MachineWordSet(MachineWordSet &&)" << std::endl;
+    std::cout << S << " MachineWordSet::MachineWordSet(MachineWordSet &&)" << std::endl;
     data = other.data;
     n = other.n;
     S = other.S;
 }
 MachineWordSet &MachineWordSet::operator=(MachineWordSet &&other) noexcept {
-    std::cout << "MachineWordSet::operator=(MachineWordSet &&)" << std::endl;
+    std::cout << S << " MachineWordSet::operator=(MachineWordSet &&)" << std::endl;
     if (this != &other) {
         n = other.n;
         data = other.data;

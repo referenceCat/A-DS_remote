@@ -70,7 +70,7 @@ CharArraySet CharArraySet::operator~() const {
             tmp.char_array[tmp.n++] = i + '0';
         }
     }
-        tmp.char_array[tmp.n] = 0;
+    tmp.char_array[tmp.n] = 0;
     return tmp;
 }
 CharArraySet::CharArraySet() : n(0), S('A' + cnt++) {
@@ -137,4 +137,8 @@ CharArraySet &CharArraySet::operator=(CharArraySet &&other) noexcept {
         delete[] other.char_array;
     }
     return *this;
+}
+CharArraySet::~CharArraySet() {
+    std::cout << S << " CharArraySet::~CharArraySet()\n";
+    delete[] char_array;
 }

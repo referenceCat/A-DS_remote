@@ -12,7 +12,7 @@ int BitArraySet::cnt = 0;
 std::ostream &operator<<(std::ostream &o, const BitArraySet &object) {
     char result[11];
     object.to_cstring(result);
-    o <<"[" <<object.S<<"] "<< result;
+    o << "[" << object.S << "] " << result;
     return o;
 }
 int BitArraySet::to_cstring(char *result) const {
@@ -32,24 +32,24 @@ BitArraySet::BitArraySet(char) : S('A' + cnt++), n(0), bit_array(new bool[N]) {
     for (int i = 0; i < N; i++) {
         bit_array[i] = (rand() % 2);
     }
-    std::cout << "BitArraySet::BitArraySet(char)" << std::endl;
+    std::cout << S << " BitArraySet::BitArraySet(char)" << std::endl;
     std::cout << *this << std::endl;
 }
 BitArraySet::BitArraySet() : S('A' + cnt++), n(0), bit_array(new bool[N]) {
     bit_array = {};
-    std::cout << "BitArraySet::BitArraySet()" << std::endl;
+    std::cout << S << " BitArraySet::BitArraySet()" << std::endl;
 }
 BitArraySet::BitArraySet(const BitArraySet &other) : S('A' + cnt++), n(other.n) {
     bit_array = new bool[N];
     for (int i = 0; i < N; i++) {
         bit_array[i] = other.bit_array[i];
     }
-    std::cout << "BitArraySet::BitArraySet(const BitArraySet &other)" << std::endl;
+    std::cout << S << " BitArraySet::BitArraySet(const BitArraySet &other)" << std::endl;
 }
 BitArraySet::BitArraySet(BitArraySet &&other) noexcept : S(other.S), n(other.n) {
     bit_array = other.bit_array;
     other.bit_array = nullptr;
-    std::cout << "BitArraySet::BitArraySet(BitArraySet &&other)" << std::endl;
+    std::cout << S << " BitArraySet::BitArraySet(BitArraySet &&other)" << std::endl;
 }
 BitArraySet &BitArraySet::operator=(BitArraySet &&other) noexcept {
     if (this != &other) {
@@ -58,7 +58,7 @@ BitArraySet &BitArraySet::operator=(BitArraySet &&other) noexcept {
         S = other.S;
         delete[] other.bit_array;
     }
-    std::cout << "BitArraySet::operator=(BitArraySet &&other)" << std::endl;
+    std::cout << S << " BitArraySet::operator=(BitArraySet &&other)" << std::endl;
     return *this;
 }
 BitArraySet BitArraySet::operator|(const BitArraySet &other) const {
@@ -66,7 +66,7 @@ BitArraySet BitArraySet::operator|(const BitArraySet &other) const {
     for (int i = 0; i < N; ++i) {
         result.bit_array[i] |= other.bit_array[i];
     }
-    std::cout << "BitArraySet::operator|(const BitArraySet &other)" << std::endl;
+    std::cout << S << " BitArraySet::operator|(const BitArraySet &other)" << std::endl;
     return result;
 }
 BitArraySet BitArraySet::operator&(const BitArraySet &other) const {
@@ -74,7 +74,7 @@ BitArraySet BitArraySet::operator&(const BitArraySet &other) const {
     for (int i = 0; i < N; ++i) {
         result.bit_array[i] &= other.bit_array[i];
     }
-    std::cout << "BitArraySet::operator&(const BitArraySet &other)" << std::endl;
+    std::cout << S << " BitArraySet::operator&(const BitArraySet &other)" << std::endl;
     return result;
 }
 BitArraySet BitArraySet::operator~() const {
@@ -82,7 +82,7 @@ BitArraySet BitArraySet::operator~() const {
     for (int i = 0; i < N; ++i) {
         result.bit_array[i] = !bit_array[i];
     }
-    std::cout << "BitArraySet::operator~()" << std::endl;
+    std::cout << S << " BitArraySet::operator~()" << std::endl;
     return result;
 }
 BitArraySet &BitArraySet::operator=(const BitArraySet &other) {
@@ -91,6 +91,10 @@ BitArraySet &BitArraySet::operator=(const BitArraySet &other) {
         n = other.n;
         std::memcpy(bit_array, other.bit_array, N);
     }
-    std::cout << "BitArraySet::operator=(const BitArraySet &other)" << std::endl;
+    std::cout << S << " BitArraySet::operator=(const BitArraySet &other)" << std::endl;
     return *this;
+}
+BitArraySet::~BitArraySet() {
+    std::cout << S << " BitArraySet::~BitArraySet()" << std::endl;
+    delete[] bit_array;
 }

@@ -26,7 +26,7 @@ public:                                                     // Открытая 
     CharArraySet &operator=(const CharArraySet &other);     // оператор присваивания
     CharArraySet &operator=(CharArraySet &&other) noexcept;
     CharArraySet(CharArraySet &&other) noexcept;
-    ~CharArraySet() { delete[] char_array; }// деструкторконстру
+    ~CharArraySet();
 
     friend std::ostream &operator<<(std::ostream &, const CharArraySet &other);// вывод множества на экран
 };
