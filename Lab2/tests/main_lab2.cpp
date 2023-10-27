@@ -7,20 +7,26 @@
 #include "modules/CharListSet.h"
 #include "modules/MachineWordSet.h"
 
+#include "modules/utils/utils.h"
+
 void bitArray();
 void charArray();
 void charList();
 void machineWord();
 
 int main() {
+    auto time = utils::measure_execution_time(bitArray);
+    std::cout << "Measured execution time: " << time << " ms" << std::endl;
+    std::cout << "==============================================" << std::endl;
+    time = utils::measure_execution_time(charList);
+    std::cout << "Measured execution time: " << time << " ms" << std::endl;
+    std::cout << "==============================================" << std::endl;
+    time = utils::measure_execution_time(machineWord);
+    std::cout << "Measured execution time: " << time << " ms" << std::endl;
+    std::cout << "==============================================" << std::endl;
+    time = utils::measure_execution_time(charArray);
+    std::cout << "Measured execution time: " << time << " ms" << std::endl;
 
-    bitArray();
-    std::cout << "==============================================" << std::endl;
-    charList();
-    std::cout << "==============================================" << std::endl;
-    machineWord();
-    std::cout << "==============================================" << std::endl;
-    charArray();
 
     return 0;
 }
