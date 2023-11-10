@@ -21,17 +21,18 @@ CharArraySet CharArraySet::operator&(const CharArraySet &other) const {
     auto res = (tmp &= other);
     return res;
 }
-CharArraySet CharArraySet::operator&=(const CharArraySet &other) {
+CharArraySet& CharArraySet::operator&=(const CharArraySet &other) {
     std::cout << S << " CharArraySet::operator&=(const CharArraySet &other)\n";
     CharArraySet tmp(*this);
+    memset(char_array, 0, N + 1);
     n = 0;
     for (int i = 0; i < tmp.n; ++i) {
         for (int j = 0; j < other.n; ++j) {
-            if (tmp.char_array[i] == other.char_array[j])
+            if (tmp.char_array[i] == other.char_array[j]){
                 this->char_array[n++] = tmp.char_array[i];
+            }
         }
     }
-    this->char_array[n] = 0;
     return *this;
 }
 CharArraySet CharArraySet::operator|(const CharArraySet &other) const {
@@ -76,7 +77,6 @@ CharArraySet CharArraySet::operator~() const {
 CharArraySet::CharArraySet() : n(0), S('A' + cnt++) {
     std::cout << S << " CharArraySet::CharArraySet()\n";
     char_array = new char[N + 1];
-    char_array[n++] = 0;
 }
 
 char *generate_char_set(size_t size, int *generated) {
@@ -163,6 +163,9 @@ int cstring_to_char_array(char *str, char *result) {
     return result_size;
 }
 
-CharArraySet::CharArraySet(char *str) : n(0), S('A' + cnt++) {
 
+CharArraySet::CharArraySet(char *str) : n(0), S('A' + cnt++) {
+    char_array = new char[N + 1];
+    n = cstring_to_char_array(str, this->char_array);
+    //    char_array[n] = 0;
 }

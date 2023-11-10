@@ -6,6 +6,7 @@
 #include "modules/CharArraySet.h"
 #include "modules/CharListSet.h"
 #include "modules/MachineWordSet.h"
+#include <iomanip>
 
 #include "modules/utils/utils.h"
 
@@ -83,12 +84,17 @@ void testUserData(){
     char dData[80] = "7";
 
     {
+
         MachineWordSet a(aData);
         MachineWordSet b(bData);
         MachineWordSet c(cData);
         MachineWordSet d(dData);
+        auto start = std::chrono::high_resolution_clock::now();
 
         MachineWordSet e = (a & ~(b | c)) | d;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1e7;
+        std::cout << "Execution time: " << std::setprecision(10) << elapsed << "ms" << std::endl;
         std::cout << e << std::endl;
     }
     {
@@ -96,8 +102,35 @@ void testUserData(){
         CharListSet b(bData);
         CharListSet c(cData);
         CharListSet d(dData);
-
+        auto start = std::chrono::high_resolution_clock::now();
         CharListSet e = (a & ~(b | c)) | d;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1e6;
+        std::cout << "Execution time: " << std::setprecision(10) << elapsed << "ms" << std::endl;
+        std::cout << e << std::endl;
+    }
+    {
+        CharArraySet a(aData);
+        CharArraySet b(bData);
+        CharArraySet c(cData);
+        CharArraySet d(dData);
+        auto start = std::chrono::high_resolution_clock::now();
+        CharArraySet e = (a & ~(b | c)) | d;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1e6;
+        std::cout << "Execution time: " << std::setprecision(10) << elapsed << "ms" << std::endl;
+        std::cout << e << std::endl;
+    }
+    {
+        BitArraySet a(aData);
+        BitArraySet b(bData);
+        BitArraySet c(cData);
+        BitArraySet d(dData);
+        auto start = std::chrono::high_resolution_clock::now();
+        BitArraySet e = (a & ~(b | c)) | d;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1e6;
+        std::cout << "Execution time: " << std::setprecision(10) << elapsed << "ms" << std::endl;
         std::cout << e << std::endl;
     }
 

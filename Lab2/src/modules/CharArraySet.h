@@ -17,7 +17,7 @@ public:                                                     // Открытая 
     CharArraySet operator|(const CharArraySet &other) const;// объединение
     CharArraySet operator|=(const CharArraySet &other);     // объединение с присваиванием
     CharArraySet operator&(const CharArraySet &other) const;// пересечение
-    CharArraySet operator&=(const CharArraySet &other);     // пересечение с присваиванием
+    CharArraySet& operator&=(const CharArraySet &other);     // пересечение с присваиванием
     CharArraySet operator~() const;                         // дополнение до универсума
     int power() const { return n; }                         // получение мощности
     explicit CharArraySet(char);                            // конструктор множества

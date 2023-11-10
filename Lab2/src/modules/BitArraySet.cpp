@@ -98,3 +98,18 @@ BitArraySet::~BitArraySet() {
     std::cout << S << " BitArraySet::~BitArraySet()" << std::endl;
     delete[] bit_array;
 }
+
+void cstring_to_bit_array(char *set, bool *result) {
+    for (int i = 0; i < 10; i++) {
+        result[i] = false;
+    }
+
+    for (int j = 0; set[j]; j++) {
+        result[set[j] - '0'] = true;
+    }
+}
+
+BitArraySet::BitArraySet(char *str) : S('A' + cnt++), n(0) {
+    bit_array = new bool[N];
+    cstring_to_bit_array(str,bit_array);
+}
