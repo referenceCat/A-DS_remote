@@ -8,6 +8,7 @@
 #include "Node.h"
 #include "iostream"
 #include "cstring"
+#include "Queue.h"
 
 
 class Tree {
@@ -17,8 +18,8 @@ class Tree {
     char **screenMatrix;    // память для выдачи на экран
 
     void clrscr();    // очистка рабочей памяти
-    Node *MakeNode(int depth);    // создание поддерева
-    void OutNodes(Node *currentNode, int row, int column); // выдача поддерева
+    Node *makeRandomSubtree(int depth);    // создание поддерева
+    void printSubtree(Node *currentNode, int row, int column); // выдача поддерева
 
     Tree(const Tree &);    // фиктивный конструктор копии
     Tree(Tree &&);        //копия с переносом (С++11)
@@ -31,8 +32,8 @@ public:
     ~Tree();
 
     // ввод — генерация дерева
-    void MakeTree() {
-        rootNode = MakeNode(0);
+    void makeRandomTree() {
+        rootNode = makeRandomSubtree(0);
     }
 
     // проверка «дерево не пусто»
@@ -40,9 +41,8 @@ public:
         return rootNode != nullptr;
     }
 
-    int DFS();    // обход дерева «в глубину»
-    int BFS();    // обход «в ширину»
-    void OutTree();    // выдача на экран
+    int breadthFirstSearch();    // обход «в ширину»
+    void printTree();    // выдача на экран
 };
 
 

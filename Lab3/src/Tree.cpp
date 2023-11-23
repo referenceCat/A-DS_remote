@@ -15,24 +15,24 @@ Tree::~Tree() {
     delete rootNode;
 }
 
-Node *Tree::MakeNode(int depth) {
+Node *Tree::makeRandomSubtree(int depth) {
     Node *newNode = nullptr;
     int Y = (depth < rand() % 6 + 1) && (tagCounter <= 'z');
 //Вариант: cout << "Node (" << tagCounter << ',' << depth << ")1/0: "; cin >> Y;
     if (Y) {    // создание узла, если Y = 1
         newNode = new Node;
         // newNode->tag = tagCounter++;     // разметка в прямом порядке (= «в глубину»)
-        newNode->leftNode = MakeNode(depth + 1);
+        newNode->leftNode = makeRandomSubtree(depth + 1);
         newNode->tag = tagCounter++;          //вариант — во внутреннем
-        newNode->rightNode = MakeNode(depth + 1);
+        newNode->rightNode = makeRandomSubtree(depth + 1);
         //	 newNode->tag = tagCounter++;		// вариант — в обратном
     }
     return newNode;
 }
 
-void Tree::OutTree() {
+void Tree::printTree() {
     clrscr();
-    OutNodes(rootNode, 1, rootOffset);
+    printSubtree(rootNode, 1, rootOffset);
     for (int i = 0; i < maxDepth; i++) {
         screenMatrix[i][79] = 0;
         std::cout << '\n' << screenMatrix[i];
@@ -45,10 +45,26 @@ void Tree::clrscr() {
         memset(screenMatrix[i], '.', 80);
 }
 
-void Tree::OutNodes(Node *currentNode, int row, int column) {
+void Tree::printSubtree(Node *currentNode, int row, int column) {
     if (row && column && (column < 80)) screenMatrix[row - 1][column - 1] = currentNode->tag; // вывод метки
     if (row < maxDepth) {
-        if (currentNode->leftNode) OutNodes(currentNode->leftNode, row + 1, column - (rootOffset >> row)); //левый сын
-        if (currentNode->rightNode) OutNodes(currentNode->rightNode, row + 1, column + (rootOffset >> row)); //правый сын
+        if (currentNode->leftNode) printSubtree(currentNode->leftNode, row + 1, column - (rootOffset >> row)); //левый сын
+        if (currentNode->rightNode)
+            printSubtree(currentNode->rightNode, row + 1, column + (rootOffset >> row)); //правый сын
     }
+}
+
+int Tree::breadthFirstSearch() {
+    const int MaxQ = 20; //максимальный размер очереди
+    int count = 0;
+    Queue<Node *> queue(MaxQ);  //создание очереди указателей на узлы
+    queue.push(rootNode); // Queue <- root поместить в очередь корень дерева
+    while (!queue.empty()) {
+        Node *currentNode = queue.pop();// взять из очереди,
+        std::cout << currentNode->tag << '_';
+        count++; // выдать тег, счёт узлов
+        if (currentNode->leftNode) queue.push(currentNode->leftNode); // Queue <- (левый сын)
+        if (currentNode->rightNode) queue.push(currentNode->rightNode); // Queue <- (правый сын)
+    }
+    return count;
 }
