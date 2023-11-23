@@ -9,13 +9,12 @@ int main( )
 { int n = 0;
     Tree tree('a', 'z', 8);
     srand(time(nullptr));
-    setlocale(LC_ALL, "Russian");
     tree.makeRandomTree();
     if(tree.exist()) {
         tree.printTree();
-        std::cout << '\n' << "Обход в ширину: ";
+        std::cout << '\n' << "BF search: ";
         n = tree.breadthFirstSearch();
-        std::cout << " Пройдено узлов = " << n;
+        std::cout << " Nodes with less than 1 child = " << n;
     }
 
     std::cin.get();
