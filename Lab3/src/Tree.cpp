@@ -15,17 +15,17 @@ Tree::~Tree() {
     delete rootNode;
 }
 
-Node *Tree::MakeNode(int depth) { // todo симметричная разметка
+Node *Tree::MakeNode(int depth) {
     Node *newNode = nullptr;
     int Y = (depth < rand() % 6 + 1) && (tagCounter <= 'z');
 //Вариант: cout << "Node (" << tagCounter << ',' << depth << ")1/0: "; cin >> Y;
     if (Y) {    // создание узла, если Y = 1
         newNode = new Node;
-        newNode->tag = tagCounter++;     // разметка в прямом порядке (= «в глубину»)
+        // newNode->tag = tagCounter++;     // разметка в прямом порядке (= «в глубину»)
         newNode->leftNode = MakeNode(depth + 1);
-//	 newNode->tag = tagCounter++;          //вариант — во внутреннем
+        newNode->tag = tagCounter++;          //вариант — во внутреннем
         newNode->rightNode = MakeNode(depth + 1);
-//	 newNode->tag = tagCounter++;		// вариант — в обратном
+        //	 newNode->tag = tagCounter++;		// вариант — в обратном
     }
     return newNode;
 }
