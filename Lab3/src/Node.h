@@ -7,7 +7,18 @@
 
 
 class Node {
+    char tag;
+    Node *leftNode;
+    Node *rightNode;    // правый сын
+public:
+    Node() : leftNode(nullptr), rightNode(nullptr) {}
 
+    ~Node() {
+        if (leftNode) delete leftNode;
+        if (rightNode) delete rightNode;
+    }
+
+    friend class Tree;    // дружественный класс «дерево»
 };
 
 
