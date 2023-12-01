@@ -44,10 +44,12 @@ public:
     }
 
     int breadthFirstSearch();    // обход «в ширину»
-    void printTree();    // выдача на экран
+    void printTree(bool vertically = true);    // выдача на экран
     Node *enter_node(std::ostream &out, std::istream &in);
 
     void makeByInput(std::ostream &out, std::istream &in);
+
+    void displayTreeHorizontallyHelper(Node *node, int level, int space) const;
 };
 
 

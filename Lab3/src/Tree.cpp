@@ -31,14 +31,19 @@ Node *Tree::makeRandomSubtree(int depth) {
     return newNode;
 }
 
-void Tree::printTree() {
+void Tree::printTree(bool vertically) {
     clrscr();
+    if(vertically){
+        displayTreeHorizontallyHelper(rootNode, 20,0);
+        return;
+    }
     printSubtree(rootNode, 1, rootOffset);
     for (int i = 0; i < maxDepth; i++) {
         screenMatrix[i][79] = 0;
         std::cout << '\n' << screenMatrix[i];
     }
     std::cout << '\n';
+
 }
 
 void Tree::clrscr() {
@@ -98,4 +103,21 @@ Node *Tree::enter_node(std::ostream &out, std::istream &in) {
 void Tree::makeByInput(std::ostream &out, std::istream &in) {
     out << "Enter tree:" << std::endl;
     rootNode = enter_node(out, in);
+}
+
+void Tree::displayTreeHorizontallyHelper(Node* node, int level, int space) const {
+    const int horizontalDistance = 5;
+
+    if (node == nullptr) {
+        return;
+    }
+
+    displayTreeHorizontallyHelper(node->rightNode, level + 1, space + horizontalDistance);
+
+    for (int i = 0; i < space; i++) {
+        std::cout << " ";
+    }
+    std::cout << node->tag << std::endl;
+
+    displayTreeHorizontallyHelper(node->leftNode, level + 1, space + horizontalDistance);
 }

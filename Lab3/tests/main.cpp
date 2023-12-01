@@ -10,8 +10,9 @@ int main( )
     Tree tree('a', 'z', 8);
     srand(time(nullptr));
     tree.makeByInput(std::cout, std::cin);
+//    tree.makeRandomTree();
     if(tree.exist()) {
-        tree.printTree();
+        tree.printTree(true);
         std::cout << '\n' << "BF search: ";
         n = tree.breadthFirstSearch();
         std::cout << " Nodes with less than 2 child = " << n;
