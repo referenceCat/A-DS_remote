@@ -12,6 +12,8 @@
 
 
 class Tree {
+    Tree(std::ostream &out, std::istream &in);
+
     Node *rootNode;    // указатель на корень дерева
     char tagCounter, tagMaxValue;        //счётчик тегов и максимальный тег
     int maxDepth, rootOffset;        //максимальная глубина, смещение корня
@@ -43,6 +45,9 @@ public:
 
     int breadthFirstSearch();    // обход «в ширину»
     void printTree();    // выдача на экран
+    Node *enter_node(std::ostream &out, std::istream &in);
+
+    void makeByInput(std::ostream &out, std::istream &in);
 };
 
 

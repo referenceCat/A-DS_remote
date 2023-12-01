@@ -18,7 +18,8 @@ Tree::~Tree() {
 Node *Tree::makeRandomSubtree(int depth) {
     Node *newNode = nullptr;
     int Y = (depth < rand() % 6 + 1) && (tagCounter <= 'z');
-//Вариант: cout << "Node (" << tagCounter << ',' << depth << ")1/0: "; cin >> Y;
+//    std::cout << "Node (" << tagCounter << ',' << depth << ")1/0: ";
+//    std::cin >> Y;
     if (Y) {    // создание узла, если Y = 1
         newNode = new Node;
         // newNode->tag = tagCounter++;     // разметка в прямом порядке (= «в глубину»)
@@ -68,4 +69,27 @@ int Tree::breadthFirstSearch() {
         if (currentNode->rightNode) queue.push(currentNode->rightNode); // Queue <- (правый сын)
     }
     return count;
+}
+
+Node *Tree::enter_node(std::ostream &out, std::istream &in) {
+    Node *node = new Node();
+    char ans;
+    out << "Enter node value:" << std::endl;
+    in >> node->tag;
+    out << "Do you want to enter left branch (y/n)?" << std::endl;
+    in >> ans;
+    if (ans == 'y') {
+        node->leftNode = enter_node(out, in);
+    }
+    out << "Do you want to enter right branch (y/n)?" << std::endl;
+    in >> ans;
+    if (ans == 'y') {
+        node->rightNode = enter_node(out, in);
+    }
+    return node;
+}
+
+void Tree::makeByInput(std::ostream &out, std::istream &in) {
+    out << "Enter tree:" << std::endl;
+    rootNode = enter_node(out, in);
 }

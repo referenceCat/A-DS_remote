@@ -9,7 +9,7 @@ int main( )
 { int n = 0;
     Tree tree('a', 'z', 8);
     srand(time(nullptr));
-    tree.makeRandomTree();
+    tree.makeByInput(std::cout, std::cin);
     if(tree.exist()) {
         tree.printTree();
         std::cout << '\n' << "BF search: ";
