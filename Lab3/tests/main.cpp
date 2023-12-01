@@ -14,7 +14,7 @@ int main( )
         tree.printTree();
         std::cout << '\n' << "BF search: ";
         n = tree.breadthFirstSearch();
-        std::cout << " Nodes with less than 1 child = " << n;
+        std::cout << " Nodes with less than 2 child = " << n;
     }
 
     std::cin.get();
