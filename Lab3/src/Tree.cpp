@@ -63,8 +63,14 @@ int Tree::breadthFirstSearch() {
     while (!queue.empty()) {
         Node *currentNode = queue.pop();// взять из очереди,
         std::cout << currentNode->tag << '_';
-        if (currentNode->leftNode == nullptr || currentNode->rightNode == nullptr) // task: less than 1 child
+        if (currentNode->leftNode == nullptr && currentNode->rightNode == nullptr) // task: less than 1 child
             count++; // выдать тег, счёт узлов
+        if(currentNode->rightNode == nullptr && currentNode->leftNode && (currentNode->leftNode->leftNode == nullptr && currentNode->leftNode->rightNode == nullptr)) {
+            count++;
+        }
+        if(currentNode->leftNode == nullptr && currentNode->rightNode && (currentNode->rightNode->leftNode == nullptr && currentNode->rightNode->rightNode == nullptr)){
+            count++;
+        }
         if (currentNode->leftNode) queue.push(currentNode->leftNode); // Queue <- (левый сын)
         if (currentNode->rightNode) queue.push(currentNode->rightNode); // Queue <- (правый сын)
     }
