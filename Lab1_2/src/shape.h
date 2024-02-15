@@ -5,29 +5,29 @@
 #ifndef A_DS_REMOTE_SHAPE_H
 #define A_DS_REMOTE_SHAPE_H
 
-//======== Файл shape.h — библиотека фигур =========
+//======== Файл Shape.h — библиотека фигур =========
 #include <list>
 #include <iostream>
 #include "screen.h"
 
 //==1. Поддерж­ка экрана в форме матрицы символов ==
-char screen[YMAX][XMAX];
+char screen[Y_MAX][X_MAX];
 enum color {
     black = '*', white = '.'
 };
 
 void screen_init() {
-    for (auto y = 0; y < YMAX; ++y)
+    for (auto y = 0; y < Y_MAX; ++y)
         for (auto &x: screen[y]) x = white;
 }
 
 void screen_destroy() {
-    for (auto y = 0; y < YMAX; ++y)
+    for (auto y = 0; y < Y_MAX; ++y)
         for (auto &x: screen[y]) x = black;
 }
 
 bool on_screen(int a, int b) // проверка попадания точки на экран
-{ return 0 <= a && a < XMAX && 0 <= b && b < YMAX; }
+{ return 0 <= a && a < X_MAX && 0 <= b && b < Y_MAX; }
 
 void put_point(int a, int b) { if (on_screen(a, b)) screen[b][a] = black; }
 
@@ -58,7 +58,7 @@ void put_line(int x0, int y0, int x1, int y1)
 void screen_clear() { screen_init(); } //Очистка экрана
 void screen_refresh() // Обновление экрана
 {
-    for (int y = YMAX - 1; 0 <= y; --y) { // с верхней строки до нижней
+    for (int y = Y_MAX - 1; 0 <= y; --y) { // с верхней строки до нижней
         for (auto x: screen[y])                 // от левого столбца до правого
             std::cout << x;
         std::cout << '\n';
@@ -66,74 +66,74 @@ void screen_refresh() // Обновление экрана
 }
 
 //== 2. Библиотека фигур ==
-struct shape {   // Виртуальный базовый класс «фигура»
-    static std::list<shape *> shapes;       // Список фигур (один на все фигуры!)
-    shape() { shapes.push_back(this); } //Фигура присоединяется к списку
-    virtual point north() const = 0;  //Точки для привязки
-    virtual point south() const = 0;
+struct Shape {   // Виртуальный базовый класс «фигура»
+    static std::list<Shape *> shapes;       // Список фигур (один на все фигуры!)
+    Shape() { shapes.push_back(this); } //Фигура присоединяется к списку
+    virtual Point north() const = 0;  //Точки для привязки
+    virtual Point south() const = 0;
 
-    virtual point east() const = 0;
+    virtual Point east() const = 0;
 
-    virtual point west() const = 0;
+    virtual Point west() const = 0;
 
-    virtual point neast() const = 0;
+    virtual Point neast() const = 0;
 
-    virtual point seast() const = 0;
+    virtual Point seast() const = 0;
 
-    virtual point nwest() const = 0;
+    virtual Point nwest() const = 0;
 
-    virtual point swest() const = 0;
+    virtual Point swest() const = 0;
 
     virtual void draw() = 0;        //Рисование
     virtual void move(int, int) = 0;    //Перемещение
     virtual void resize(double) = 0;        //Изменение размера
-    virtual ~shape() { shapes.remove(this); } //Деструктор
+    virtual ~Shape() { shapes.remove(this); } //Деструктор
 };
 
-std::list<shape *> shape::shapes;   // Размещение списка фигур
+std::list<Shape *> Shape::shapes;   // Размещение списка фигур
 void shape_refresh()    // Перерисовка всех фигур на экране
 {
     screen_clear();
-    for (auto p: shape::shapes) p->draw(); //Динамическое связывание!!!
+    for (auto p: Shape::shapes) p->draw(); //Динамическое связывание!!!
     screen_refresh();
 }
 
-class rotatable : virtual public shape { //Фигуры, пригодные к повороту
+class Rotatable : virtual public Shape { //Фигуры, пригодные к повороту
 public:
     virtual void rotate_left() = 0;    //Повернуть влево
     virtual void rotate_right() = 0;    //Повернуть вправо
 };
 
-class reflectable : virtual public shape { // Фигуры, пригодные
+class Reflectable : virtual public Shape { // Фигуры, пригодные
 public:                         // к зеркальному отражению
     virtual void flip_horisontally() = 0;    // Отразить горизонтально
     virtual void flip_vertically() = 0;               // Отразить вертикально
 };
 
-class line : public shape {        // ==== Прямая линия ====
+class Line : public Shape {        // ==== Прямая линия ====
 /* отрезок прямой ["w", "e"].
    north( ) определяет точку «выше центра отрезка и так далеко
    на север, как самая его северная точка», и т. п. */
 protected:
-    point w, e;
+    Point w, e;
 public:
-    line(point a, point b) : w(a), e(b) {}; //Произвольная линия (по двум точкам)
-    line(point a, int L) : w(point(a.x + L - 1, a.y)), e(a) {}; //Горизонтальная линия
-    point north() const { return point((w.x + e.x) / 2, e.y < w.y ? w.y : e.y); }
+    Line(Point a, Point b) : w(a), e(b) {}; //Произвольная линия (по двум точкам)
+    Line(Point a, int L) : w(Point(a.x + L - 1, a.y)), e(a) {}; //Горизонтальная линия
+    Point north() const { return Point((w.x + e.x) / 2, e.y < w.y ? w.y : e.y); }
 
-    point south() const { return point((w.x + e.x) / 2, e.y < w.y ? e.y : w.y); }
+    Point south() const { return Point((w.x + e.x) / 2, e.y < w.y ? e.y : w.y); }
 
-    point east() const { return point(e.x < w.x ? w.x : e.x, (w.y + e.y) / 2); }
+    Point east() const { return Point(e.x < w.x ? w.x : e.x, (w.y + e.y) / 2); }
 
-    point west() const { return point(e.x < w.x ? e.x : w.x, (w.y + e.y) / 2); }
+    Point west() const { return Point(e.x < w.x ? e.x : w.x, (w.y + e.y) / 2); }
 
-    point neast() const { return point(w.x < e.x ? e.x : w.x, e.y < w.y ? w.y : e.y); }
+    Point neast() const { return Point(w.x < e.x ? e.x : w.x, e.y < w.y ? w.y : e.y); }
 
-    point seast() const { return point(w.x < e.x ? e.x : w.x, e.y < w.y ? e.y : w.y); }
+    Point seast() const { return Point(w.x < e.x ? e.x : w.x, e.y < w.y ? e.y : w.y); }
 
-    point nwest() const { return point(w.x < e.x ? w.x : e.x, e.y < w.y ? w.y : e.y); }
+    Point nwest() const { return Point(w.x < e.x ? w.x : e.x, e.y < w.y ? w.y : e.y); }
 
-    point swest() const { return point(w.x < e.x ? w.x : e.x, e.y < w.y ? e.y : w.y); }
+    Point swest() const { return Point(w.x < e.x ? w.x : e.x, e.y < w.y ? e.y : w.y); }
 
     void move(int a, int b) {
         w.x += a;
@@ -151,7 +151,7 @@ public:
     }
 };
 
-class rectangle : public rotatable {      // ==== Прямоугольник ====
+class Rectangle : public Rotatable {      // ==== Прямоугольник ====
 /* nw ------ n ------ ne
    |		       |
    |		       |
@@ -160,25 +160,25 @@ class rectangle : public rotatable {      // ==== Прямоугольник ===
    |		       |
    sw ------- s ------ se */
 protected:
-    point sw, ne;
+    Point sw, ne;
 public:
-    rectangle(point a, point b) : sw(a), ne(b) {}
+    Rectangle(Point a, Point b) : sw(a), ne(b) {}
 
-    point north() const { return point((sw.x + ne.x) / 2, ne.y); }
+    Point north() const { return Point((sw.x + ne.x) / 2, ne.y); }
 
-    point south() const { return point((sw.x + ne.x) / 2, sw.y); }
+    Point south() const { return Point((sw.x + ne.x) / 2, sw.y); }
 
-    point east() const { return point(ne.x, (sw.y + ne.y) / 2); }
+    Point east() const { return Point(ne.x, (sw.y + ne.y) / 2); }
 
-    point west() const { return point(sw.x, (sw.y + ne.y) / 2); }
+    Point west() const { return Point(sw.x, (sw.y + ne.y) / 2); }
 
-    point neast() const { return ne; }
+    Point neast() const { return ne; }
 
-    point seast() const { return point(ne.x, sw.y); }
+    Point seast() const { return Point(ne.x, sw.y); }
 
-    point nwest() const { return point(sw.x, ne.y); }
+    Point nwest() const { return Point(sw.x, ne.y); }
 
-    point swest() const { return sw; }
+    Point swest() const { return sw; }
 
     void rotate_right()           // Поворот вправо относительно se
     {
@@ -214,10 +214,10 @@ public:
     }
 };
 
-void up(shape &p, const shape &q) // поместить фигуру p над фигурой q
+void up(Shape &p, const Shape &q) // поместить фигуру p над фигурой q
 {    //Это ОБЫЧНАЯ функция, не член класса! Динамическое связывание!!
-    point n = q.north();
-    point s = p.south();
+    Point n = q.north();
+    Point s = p.south();
     p.move(n.x - s.x, n.y - s.y + 1);
 }
 
