@@ -203,7 +203,7 @@ public:
         ne.y += b;
     }
 
-    void resize(int d) {
+    void resize(double d) {
         ne.x = sw.x + (ne.x - sw.x) * d;
         ne.y = sw.y + (ne.y - sw.y) * d;
     }
@@ -221,6 +221,13 @@ void up(Shape &p, const Shape &q) // поместить фигуру p над ф
     Point n = q.north();
     Point s = p.south();
     p.move(n.x - s.x, n.y - s.y + 1);
+}
+
+// ПРИМЕР ДОБАВКИ: дополнительная функция присоединения…
+void down(Shape &p, const Shape &q) {
+    Point n = q.south();
+    Point s = p.north();
+    p.move(n.x - s.x, n.y - s.y - 1);
 }
 
 // ПРИМЕР ДОБАВКИ: дополнительный фрагмент – полуокружность
