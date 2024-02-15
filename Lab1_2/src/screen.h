@@ -6,8 +6,8 @@
 #define A_DS_REMOTE_SCREEN_H
 
 //=== Файл screen.h -- поддержка работы с экраном
-const int X_MAX = 60;  //Размер экрана
-const int Y_MAX = 30;
+const int X_MAX = 100;  //Размер экрана
+const int Y_MAX = 100;
 
 class Point {    //Точка на экране
 public:

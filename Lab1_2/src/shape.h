@@ -106,7 +106,7 @@ public:
 
 class Reflectable : virtual public Shape { // Фигуры, пригодные
 public:                         // к зеркальному отражению
-    virtual void flip_horisontally() = 0;    // Отразить горизонтально
+    virtual void flip_horizontally() = 0;    // Отразить горизонтально
     virtual void flip_vertically() = 0;               // Отразить вертикально
 };
 
@@ -183,15 +183,15 @@ public:
     void rotate_right()           // Поворот вправо относительно se
     {
         int w = ne.x - sw.x, h = ne.y - sw.y; // (учитывается масштаб по осям)
-        sw.x = ne.x - h * 2;
-        ne.y = sw.y + w / 2;
+        sw.x = ne.x - h;
+        ne.y = sw.y + w;
     }
 
     void rotate_left() // Поворот влево относительно sw
     {
         int w = ne.x - sw.x, h = ne.y - sw.y;
-        ne.x = sw.x + h * 2;
-        ne.y = sw.y + w / 2;
+        ne.x = sw.x + h;
+        ne.y = sw.y + w;
     }
 
     void move(int a, int b) {
