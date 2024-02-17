@@ -6,8 +6,8 @@
 #define A_DS_REMOTE_SCREEN_H
 
 //=== Файл screen.h -- поддержка работы с экраном
-const int X_MAX = 100;  //Размер экрана
-const int Y_MAX = 100;
+const int SCREEN_WIDTH = 500;  //Размер экрана
+const int SCREEN_HEIGHT = 500;
 
 class Point {    //Точка на экране
 public:
@@ -17,14 +17,11 @@ public:
 };
 
 // Набор утилит для работы с экраном
-void put_point(int a, int b);    // Вывод точки (2 варианта)
-void put_point(Point p) { put_point(p.x, p.y); } //
 void put_line(int, int, int, int); // Вывод линии (2 варианта)
 void put_line(Point a, Point b) { put_line(a.x, a.y, b.x, b.y); }
 
-void screen_init();        // Создание экрана
+void screen_init();       // Создание экрана
 void screen_destroy();    // Удаление
-void screen_refresh();    // Обновление
-void screen_clear();               // Очистка
+void screen_clear();      // Очистка
 
 #endif //A_DS_REMOTE_SCREEN_H

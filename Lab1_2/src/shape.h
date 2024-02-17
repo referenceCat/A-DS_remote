@@ -9,61 +9,45 @@
 #include <list>
 #include <iostream>
 #include "screen.h"
+#include "allegro5/allegro5.h"
+#include "allegro5/allegro5.h"
+#include "allegro5/allegro_primitives.h"
+#include "allegro5/allegro_font.h"
+#include "allegro5/allegro_ttf.h"
+//==1. Поддерж­ка экрана ==
 
-//==1. Поддерж­ка экрана в форме матрицы символов ==
-char screen[Y_MAX][X_MAX];
-enum color {
-    black = '*', white = '.'
-};
+ALLEGRO_DISPLAY* screen;
+ALLEGRO_EVENT_QUEUE* event_queue;
 
 void screen_init() {
-    for (auto y = 0; y < Y_MAX; ++y)
-        for (auto &x: screen[y]) x = white;
+    al_init_primitives_addon();
+    al_init_font_addon();
+    al_init_ttf_addon();
+    screen = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
+    al_set_target_bitmap(al_get_backbuffer(al_get_current_display()));
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+
+    event_queue = al_create_event_queue();
+    al_register_event_source(event_queue, al_get_display_event_source(screen));
+    al_install_keyboard();
+    al_register_event_source(event_queue, al_get_keyboard_event_source());
 }
 
 void screen_destroy() {
-    for (auto y = 0; y < Y_MAX; ++y)
-        for (auto &x: screen[y]) x = black;
+    al_destroy_display(screen);
+    al_destroy_event_queue(event_queue);
 }
 
 bool on_screen(int a, int b) // проверка попадания точки на экран
-{ return 0 <= a && a < X_MAX && 0 <= b && b < Y_MAX; }
+{ return 0 <= a && a < SCREEN_WIDTH && 0 <= b && b < SCREEN_HEIGHT; }
 
-void put_point(int a, int b) { if (on_screen(a, b)) screen[b][a] = black; }
-
-void put_line(int x0, int y0, int x1, int y1)
-/* Алгоритм Брезенхэма для прямой:
-рисование отрезка прямой от (x0, y0) до (x1, y1).
-Уравнение прямой: b(x–x0) + a(y–y0) = 0.
-Минимизируется величина abs(eps), где eps = 2*(b(x–x0)) + a(y–y0).  */
-{
-    int dx = 1;
-    int a = x1 - x0;
-    if (a < 0) dx = -1, a = -a;
-    int dy = 1;
-    int b = y1 - y0;
-    if (b < 0) dy = -1, b = -b;
-    int two_a = 2 * a;
-    int two_b = 2 * b;
-    int xcrit = -b + two_a;
-    int eps = 0;
-    for (;;) { //Формирование прямой линии по точкам
-        put_point(x0, y0);
-        if (x0 == x1 && y0 == y1) break;
-        if (eps <= xcrit) x0 += dx, eps += two_b;
-        if (eps >= a || a < b) y0 += dy, eps -= two_a;
-    }
+void put_line(int x0, int y0, int x1, int y1) {
+    al_draw_line(x0, SCREEN_HEIGHT - y0, x1, SCREEN_HEIGHT - y1, al_map_rgb(255, 255, 255), 1);
 }
 
-void screen_clear() { screen_init(); } //Очистка экрана
-void screen_refresh() // Обновление экрана
-{
-    for (int y = Y_MAX - 1; 0 <= y; --y) { // с верхней строки до нижней
-        for (auto x: screen[y])                 // от левого столбца до правого
-            std::cout << x;
-        std::cout << '\n';
-    }
-}
+void screen_clear() {
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+} //Очистка экрана
 
 //== 2. Библиотека фигур ==
 struct Shape {   // Виртуальный базовый класс «фигура»
@@ -95,7 +79,7 @@ void shape_refresh()    // Перерисовка всех фигур на эк�
 {
     screen_clear();
     for (auto p: Shape::shapes) p->draw(); //Динамическое связывание!!!
-    screen_refresh();
+    al_flip_display();
 }
 
 class Rotatable : virtual public Shape { //Фигуры, пригодные к повороту

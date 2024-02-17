@@ -7,6 +7,10 @@
 // #include "pch.h"	//связь с ОС (пример для Visual C++2017)
 #include "../src/screen.h"
 #include "../src/shape.h"
+#include "allegro5/allegro5.h"
+#include <cmath>
+#define SCREEN_SIZE_COEFFICIENT 10
+#define PHI_STEP 0.1
 
 // ПРИМЕР ДОБАВКИ: дополнительный фрагмент – полуокружность
 class HalfCircle : public Rectangle, public Reflectable {
@@ -37,79 +41,47 @@ public:
     }
 };
 
-void HalfCircle::draw()   //Алгоритм Брезенхэма для окружностей
-{            // (выдаются два сектора, указываемые значением reflected_horizontally)
-    int x0, y0, radius, x, y, delta, error;
-    if (direction == 0 || direction == 2) { // направления вверх и вниз
-        y0 = (sw.y + ne.y) / 2;
-        x0 = direction == 0 ? sw.x : ne.x;
-        // put_point(x0, y0);
-        radius = (ne.y - sw.y) / 2;
-        x = radius;
-        y = 0;
-        delta = 2 - 2 * radius;
-        error = 0;
-        while (x >= 0) { // Цикл рисования
-            if (direction == 0) {
-                put_point(x0 + x, y0 + y * 0.7);
-                put_point(x0 + x, y0 - y * 0.7);
-            } else {
-                put_point(x0 - x, y0 + y * 0.7);
-                put_point(x0 - x, y0 - y * 0.7);
-            }
-            error = 2 * (delta + x) - 1;
-            if (delta < 0 && error <= 0) {
-                ++y;
-                delta += 2 * y + 1;
-                continue;
-            }
-            error = 2 * (delta - y) - 1;
-            if (delta > 0 && error > 0) {
-                --x;
-                delta += 1 - 2 * x;
-                continue;
-            }
-            ++y;
-            delta += 2 * (-x + y);
-            --x;
-        }
-    } else {
+void HalfCircle::draw() {
+    int x0, y0;
+    double phi_first, phi_last;
+    switch (direction) {
+        case 0:
+            x0 = west().x;
+            y0 = (north().y + south().y) / 2;
+            phi_first = M_PI * -1/2;
+            phi_last = M_PI * 1/2;
+            break;
 
-        x0 = (sw.x + ne.x) / 2;
-        y0 = direction == 1 ? sw.y : ne.y;
-        // put_point(x0, y0);
-        radius = (ne.x - sw.x) / 2;
-        x = 0;
-        y = radius;
+        case 1:
+            x0 = (east().x + west().x) / 2;
+            y0 = south().y;
+            phi_first = M_PI * 0;
+            phi_last = M_PI * 1;
+            break;
 
-        delta = 2 - 2 * radius;
-        error = 0;
-        while (y >= 0) { // Цикл рисования
-            if (direction == 3) {
-                put_point(x0 + x, y0 - y);
-                put_point(x0 - x, y0 - y);
-            } else {
-                put_point(x0 + x, y0 + y);
-                put_point(x0 - x, y0 + y);
-            }
-            error = 2 * (delta + y) - 1;
-            if (delta < 0 && error <= 0) {
-                ++x;
-                delta += 2 * x + 1;
-                continue;
-            }
-            error = 2 * (delta - x) - 1;
-            if (delta > 0 && error > 0) {
-                --y;
-                delta += 1 - 2 * y;
-                continue;
-            }
-            ++x;
-            delta += 2 * (x - y);
-            --y;
-        }
+        case 2:
+            x0 = east().x;
+            y0 = (north().y + south().y) / 2;
+            phi_first = M_PI * 1/2;
+            phi_last = M_PI * 3/2;
+            break;
 
+        case 3:
+            x0 = (east().x + west().x) / 2;
+            y0 = north().y;
+            phi_first = M_PI * 1;
+            phi_last = M_PI * 2;
+            break;
     }
+
+    int radius = (ne.x - sw.x) < (ne.y - sw.y) ? ne.x - sw.x : ne.y - sw.y;
+
+    double last_phi = phi_first;
+    for (double phi = phi_first; phi <= phi_last + PHI_STEP; phi += PHI_STEP) {
+        put_line(x0 + cos(last_phi) * radius, y0 + sin(last_phi)  * radius, x0 + cos(phi)  * radius, y0 + sin(phi)  * radius);
+        last_phi = phi;
+    }
+    // Rectangle::draw();
 }
 
 // ПРИМЕР ДОБАВКИ: дополнительная функция присоединения…
@@ -153,15 +125,15 @@ MyShape::MyShape(Point a, Point b)
         : Rectangle(a, b),    //Инициализация базового класса
           w(neast().x - swest().x + 1), // Инициализация данных
           h(neast().y - swest().y + 1), // – строго в порядке объявления!
-          l_eye(Point(swest().x + 2, swest().y + h * 3 / 4), 2),
-          r_eye(Point(swest().x + w - 4, swest().y + h * 3 / 4), 2),
-          mouth(Point(swest().x + 2, swest().y + h / 4), w - 4) {}
+          l_eye(Point(swest().x + 2*SCREEN_SIZE_COEFFICIENT, swest().y + h * 3 / 4), 2*SCREEN_SIZE_COEFFICIENT),
+          r_eye(Point(swest().x + w - 4*SCREEN_SIZE_COEFFICIENT, swest().y + h * 3 / 4), 2*SCREEN_SIZE_COEFFICIENT),
+          mouth(Point(swest().x + 2*SCREEN_SIZE_COEFFICIENT, swest().y + h / 4), w - 4*SCREEN_SIZE_COEFFICIENT) {}
 
 void MyShape::draw() {
     Rectangle::draw();      //Контур лица (глаза и нос рисуются сами!)
     int a = (swest().x + neast().x) / 2;
     int b = (swest().y + neast().y) / 2;
-    put_point(Point(a, b));   // Нос – существует только на рисунке!
+    put_line(Point(a, b), Point(a+2, b+2));
 }
 
 void MyShape::move(int a, int b) {
@@ -172,44 +144,78 @@ void MyShape::move(int a, int b) {
 }
 
 int main() {
+
+    Rectangle hat(Point(0, 0), Point(70, 50));
+    Line brim(Point(0, 150), 110);
+    MyShape face(Point(150, 100), Point(270, 180));
+    HalfCircle beard(Point(400, 100), 100);
+    HalfCircle bakenbards_l(Point(400, 200), 20);
+    HalfCircle bakenbards_r(Point(500, 250), 20);
+    HalfCircle horn_l(Point(400, 300), 20);
+    HalfCircle horn_r(Point(500, 350), 20);
+
+    // Initialize allegro
+    if (!al_init()) {
+        fprintf(stderr, "Failed to initialize allegro.\n");
+        return 1;
+    }
+
+
     setlocale(LC_ALL, "Rus");
     screen_init();
-//== 1. Объявление набора фигур ==
-    Rectangle hat(Point(0, 0), Point(7, 5));
-    Line brim(Point(0, 15), 11);
-    MyShape face(Point(15, 10), Point(27, 18));
-    HalfCircle beard(Point(40, 10), 10);
-    HalfCircle bakenbards_l(Point(40, 20), 2);
-    HalfCircle bakenbards_r(Point(50, 25), 2);
-    HalfCircle horn_l(Point(40, 30), 2);
-    HalfCircle horn_r(Point(50, 35), 2);
-    shape_refresh();
-    std::cout << "=== Generated... ===\n";
-//== 2. Подготовка к сборке ==
-    brim.resize(2.0);
-    face.resize(2.0);
-    beard.flip_vertically();
-    beard.resize(0.5);
-    horn_l.rotate_left();
-    horn_r.rotate_left();
-    horn_r.flip_horizontally();
-    bakenbards_l.rotate_right();
-    bakenbards_r.rotate_right();
-    bakenbards_l.flip_horizontally();
-    shape_refresh();
-    std::cout << "=== Prepared... ===\n";
-//== 3. Сборка изображения ==
-//	face.move(0, -10); // Лицо – в исходное положение (если нужно!)
-    up(brim, face);
-    up(hat, brim);
-    down(beard, face);
-    align_up_right(bakenbards_r, beard);
-    align_up_right(horn_r, face);
-    align_up_left(bakenbards_l, beard);
-    align_up_left(horn_l, face);
-    shape_refresh();
-    std::cout << "=== Ready! ===\n";
-    std::cin.get();       //Смотреть результат
+
+
+    bool running = true;
+    int counter = 0;
+
+    while (running) {
+        ALLEGRO_EVENT event;
+        ALLEGRO_TIMEOUT timeout;
+
+        // Initialize timeout
+        al_init_timeout(&timeout, 0.06);
+
+        // Fetch the event (if one exists)
+        bool get_event = al_wait_for_event_until(event_queue, &event, &timeout);
+
+        // Handle the event
+        if (get_event) {
+            switch (event.type) {
+                case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                    running = false;
+                    break;
+                case ALLEGRO_EVENT_KEY_DOWN:
+                    if (counter == 0) {
+                        shape_refresh();
+                    } else if (counter == 1) {
+                        brim.resize(2.0);
+                        face.resize(2.0);
+                        beard.flip_vertically();
+                        beard.resize(0.6);
+                        horn_l.rotate_left();
+                        horn_r.rotate_left();
+                        horn_r.flip_horizontally();
+                        bakenbards_l.rotate_right();
+                        bakenbards_r.rotate_right();
+                        bakenbards_l.flip_horizontally();
+                        shape_refresh();
+                    } else if (counter == 2) {
+                        up(brim, face);
+                        up(hat, brim);
+                        down(beard, face);
+                        align_up_right(bakenbards_r, beard);
+                        align_up_right(horn_r, face);
+                        align_up_left(bakenbards_l, beard);
+                        align_up_left(horn_l, face);
+                        shape_refresh();
+                    }
+                    counter += 1;
+                default:
+                    fprintf(stderr, "Unsupported event received: %d\n", event.type);
+                    break;
+            }
+        }
+    }
     screen_destroy();
     return 0;
 }
