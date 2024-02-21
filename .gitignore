@@ -7,3 +7,6 @@ build
 .vs
 .vscode
 /Lab1/test.cpp
+/Lab2/tests/my_test.cpp
+/Lab3/task.txt
+/Lab3/img.png
