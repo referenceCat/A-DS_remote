@@ -5,6 +5,8 @@
 #ifndef A_DS_REMOTE_SCREEN_H
 #define A_DS_REMOTE_SCREEN_H
 
+#include <allegro5/bitmap.h>
+
 //=== Файл screen.h -- поддержка работы с экраном
 const int SCREEN_WIDTH = 500;  //Размер экрана
 const int SCREEN_HEIGHT = 500;
@@ -19,6 +21,7 @@ public:
 // Набор утилит для работы с экраном
 void put_line(int, int, int, int); // Вывод линии (2 варианта)
 void put_line(Point a, Point b) { put_line(a.x, a.y, b.x, b.y); }
+void put_error(int, int);
 
 void screen_init();       // Создание экрана
 void screen_destroy();    // Удаление

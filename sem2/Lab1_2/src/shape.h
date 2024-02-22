@@ -14,15 +14,18 @@
 #include "allegro5/allegro_primitives.h"
 #include "allegro5/allegro_font.h"
 #include "allegro5/allegro_ttf.h"
+#include "allegro5/allegro_image.h"
 //==1. Поддерж­ка экрана ==
 
 ALLEGRO_DISPLAY* screen;
 ALLEGRO_EVENT_QUEUE* event_queue;
+ALLEGRO_FONT* font;
 
 void screen_init() {
     al_init_primitives_addon();
     al_init_font_addon();
     al_init_ttf_addon();
+    al_init_image_addon();
     screen = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
     al_set_target_bitmap(al_get_backbuffer(al_get_current_display()));
     al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -31,6 +34,8 @@ void screen_init() {
     al_register_event_source(event_queue, al_get_display_event_source(screen));
     al_install_keyboard();
     al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+    font = al_load_font("/home/referencecat/CLionProjects/A&DS/sem2/Lab1_2/resources/clacon2.ttf", 16, false); // todo relative path
 }
 
 void screen_destroy() {
@@ -43,6 +48,10 @@ bool on_screen(int a, int b) // проверка попадания точки �
 
 void put_line(int x0, int y0, int x1, int y1) {
     al_draw_line(x0, SCREEN_HEIGHT - y0, x1, SCREEN_HEIGHT - y1, al_map_rgb(255, 255, 255), 1);
+}
+
+void put_error(int x0, int y0, ALLEGRO_BITMAP* bitmap) {
+    al_draw_text(font, al_map_rgb(255, 0, 0), x0, y0, false, "ERROR");
 }
 
 void screen_clear() {

@@ -9,6 +9,7 @@
 #include "../src/shape.h"
 #include "allegro5/allegro5.h"
 #include <cmath>
+#include "../src/ErrorSign.h"
 #define SCREEN_SIZE_COEFFICIENT 10
 #define PHI_STEP 0.1
 
@@ -153,6 +154,8 @@ int main() {
     HalfCircle bakenbards_r(Point(500, 250), 20);
     HalfCircle horn_l(Point(400, 300), 20);
     HalfCircle horn_r(Point(500, 350), 20);
+    ErrorSign errorSign(100, 100);
+
 
     // Initialize allegro
     if (!al_init()) {
