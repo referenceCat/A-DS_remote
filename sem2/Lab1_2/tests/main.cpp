@@ -104,6 +104,19 @@ void align_up_left(Shape &moved, const Shape &reference) {
     moved.move(nw.x - se.x - 1, nw.y - se.y + 1);
 }
 
+void align_down_right(Shape &moved, const Shape &reference) {
+    Point ne = reference.neast();
+    Point sw = moved.nwest();
+    moved.move(ne.x - sw.x + 1, ne.y - sw.y + 1);
+}
+
+
+void align_down_left(Shape &moved, const Shape &reference) {
+    Point nw = reference.nwest();
+    Point se = moved.neast();
+    moved.move(nw.x - se.x - 1, nw.y - se.y + 1);
+}
+
 
 // Cборная пользовательская фигура – физиономия
 class MyShape : public Rectangle {      // Моя фигура ЯВЛЯЕТСЯ
@@ -153,6 +166,9 @@ int main() {
     HalfCircle bakenbards_r(Point(500, 250), 20);
     HalfCircle horn_l(Point(400, 300), 20);
     HalfCircle horn_r(Point(500, 350), 20);
+    HalfCircle ear_l(Point(400, 300), 10);
+    HalfCircle ear_r(Point(500, 350), 10);
+    HalfCircle dome(Point(400, 300), 30);
 
     // Initialize allegro
     if (!al_init()) {
@@ -198,6 +214,9 @@ int main() {
                         bakenbards_l.rotate_right();
                         bakenbards_r.rotate_right();
                         bakenbards_l.flip_horizontally();
+                        ear_r.rotate_right();
+                        ear_l.rotate_left();
+                        dome.resize(1.2);
                         shape_refresh();
                     } else if (counter == 2) {
                         up(brim, face);
@@ -207,6 +226,9 @@ int main() {
                         align_up_right(horn_r, face);
                         align_up_left(bakenbards_l, beard);
                         align_up_left(horn_l, face);
+                        align_down_right(ear_r, face);
+                        align_down_left(ear_l, face);
+                        up(dome, hat);
                         shape_refresh();
                     }
                     counter += 1;
