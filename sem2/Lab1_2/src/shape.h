@@ -50,7 +50,7 @@ void put_line(int x0, int y0, int x1, int y1) {
     al_draw_line(x0, SCREEN_HEIGHT - y0, x1, SCREEN_HEIGHT - y1, al_map_rgb(255, 255, 255), 1);
 }
 
-void put_error(int x0, int y0, ALLEGRO_BITMAP* bitmap) {
+void put_error(int x0, int y0) {
     al_draw_text(font, al_map_rgb(255, 0, 0), x0, y0, false, "ERROR");
 }
 

@@ -10,19 +10,17 @@
 
 
 class ErrorSign: public Shape {
-    const int width = 50, height = 50;
     int x, y;
 public:
-    Point north() const {
+    Point north() const override {
         return Point(x, y);
     }
 
-    //Точки для привязки
-    Point south() const {
+    Point south() const override {
         return Point(x, y);
     }
 
-    Point east() const {
+    Point east() const override {
         return Point(x, y);
     }
 
@@ -30,42 +28,30 @@ public:
         return Point(x, y);
     }
 
-    Point neast() const {
+    Point neast() const override {
         return Point(x, y);
     }
 
-    Point seast() const {
+    Point seast() const override {
         return Point(x, y);
     }
 
-    Point nwest() const {
+    Point nwest() const override {
         return Point(x, y);
     }
 
-    Point swest() const {
+    Point swest() const override {
         return Point(x, y);
     }
 
 
-    void move(int, int) {};
-    void resize(double) {};
-    ~ErrorSign() override {
-        al_destroy_bitmap(error_image_bitmap);
-    }
+    void move(int x0, int y0) override { x = x0; y = y0; };
+    void resize(double) override {};
 
-    ErrorSign(int x, int y): x(x), y(y) {
-        try {
-            error_image_bitmap = al_load_bitmap(path_to_error_image);
-            if (!error_image_bitmap) {
-                throw ResourceException(path_to_error_image);
-            }
-        } catch (ResourceException e) {
-            std::cerr << "could not load given resource: " << e.what() << std::endl;
-        }
-    }
+    ErrorSign(int x, int y): x(x), y(y) {}
 
-    void draw() {
-        put_bitmap(x, y, error_image_bitmap);
+    void draw() override {
+        put_error(x, y);
     }
 };
 
