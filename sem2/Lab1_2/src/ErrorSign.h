@@ -5,7 +5,6 @@
 #ifndef A_DS_REMOTE_ERRORSIGN_H
 #define A_DS_REMOTE_ERRORSIGN_H
 #include "shape.h"
-#include "ResourceException.h"
 #include <iostream>
 
 
@@ -50,10 +49,17 @@ public:
 
     ErrorSign(int x, int y): x(x), y(y) {}
 
+    ErrorSign(): x(50), y(50) {}
+
     void draw() override {
         put_error(x, y);
     }
 };
+
+Shape::~Shape() {
+        shapes.remove(this);
+        std::cout << "~Shape() called" << std::endl;
+}
 
 
 #endif //A_DS_REMOTE_ERRORSIGN_H

@@ -10,6 +10,7 @@
 #include "allegro5/allegro5.h"
 #include <cmath>
 #include "../src/ErrorSign.h"
+#include "iostream"
 #define SCREEN_SIZE_COEFFICIENT 10
 #define PHI_STEP 0.1
 
@@ -78,7 +79,7 @@ void HalfCircle::draw() {
     int radius = (ne.x - sw.x) < (ne.y - sw.y) ? ne.x - sw.x : ne.y - sw.y;
 
     double last_phi = phi_first;
-    for (double phi = phi_first; phi <= phi_last + PHI_STEP; phi += PHI_STEP) {
+    for (double phi = phi_first + PHI_STEP; phi <= phi_last + PHI_STEP; phi += PHI_STEP) {
         put_line(x0 + cos(last_phi) * radius, y0 + sin(last_phi)  * radius, x0 + cos(phi)  * radius, y0 + sin(phi)  * radius);
         last_phi = phi;
     }
@@ -145,32 +146,64 @@ void MyShape::move(int a, int b) {
 }
 
 int main() {
+    Shape* hat;
+    Shape* face;
+    Shape* brim;
+    Shape* beard;
 
-    Rectangle hat(Point(0, 0), Point(70, 50));
-    Line brim(Point(0, 150), 110);
-    MyShape face(Point(150, 100), Point(270, 180));
-    HalfCircle beard(Point(400, 100), 100);
-    HalfCircle bakenbards_l(Point(400, 200), 20);
-    HalfCircle bakenbards_r(Point(500, 250), 20);
-    HalfCircle horn_l(Point(400, 300), 20);
-    HalfCircle horn_r(Point(500, 350), 20);
-    ErrorSign errorSign(100, 100);
+    try {
+        auto* init = new Rectangle(Point(0, 50), Point(70, 50)); // should be Point(0, 0), Point(70, 50)
+        init->rotate_left();
+        hat = init;
 
+    } catch (std::exception exception) {
+        std::cerr << exception.what() << std::endl;
+        hat = new ErrorSign(0, 0);
+     }
 
-    // Initialize allegro
-    if (!al_init()) {
-        fprintf(stderr, "Failed to initialize allegro.\n");
-        return 1;
+    try {
+        auto* init = new MyShape(Point(100, 120), Point(220, 220));
+        face = init;
+
+    } catch (std::exception exception) {
+        std::cerr << exception.what() << std::endl;
+        face = new ErrorSign(0, 0);
+    }
+
+    try {
+        auto* init = new Line(Point(0, 150), 110);
+        brim = init;
+
+    } catch (std::exception exception) {
+        std::cerr << exception.what() << std::endl;
+        brim = new ErrorSign(0, 0);
+    }
+
+    try {
+        auto* init = new HalfCircle(Point(400, 100), 100);
+        init->flip_vertically();
+
+        beard = init;
+
+    } catch (std::exception exception) {
+        std::cerr << exception.what() << std::endl;
+        brim = new ErrorSign(0, 0);
     }
 
 
+    brim->resize(2.0);
+    beard->resize(0); // should be 0.6
+    // face->resize(2.0);
+    up(*brim, *face);
+    up(*hat, *brim);
+    down(*beard, *face);
+
     setlocale(LC_ALL, "Rus");
     screen_init();
+    shape_refresh();
 
-
+    // catching ALLEGRO_EVENT_DISPLAY_CLOSE
     bool running = true;
-    int counter = 0;
-
     while (running) {
         ALLEGRO_EVENT event;
         ALLEGRO_TIMEOUT timeout;
@@ -181,42 +214,8 @@ int main() {
         // Fetch the event (if one exists)
         bool get_event = al_wait_for_event_until(event_queue, &event, &timeout);
 
-        // Handle the event
-        if (get_event) {
-            switch (event.type) {
-                case ALLEGRO_EVENT_DISPLAY_CLOSE:
-                    running = false;
-                    break;
-                case ALLEGRO_EVENT_KEY_DOWN:
-                    if (counter == 0) {
-                        shape_refresh();
-                    } else if (counter == 1) {
-                        brim.resize(2.0);
-                        face.resize(2.0);
-                        beard.flip_vertically();
-                        beard.resize(0.6);
-                        horn_l.rotate_left();
-                        horn_r.rotate_left();
-                        horn_r.flip_horizontally();
-                        bakenbards_l.rotate_right();
-                        bakenbards_r.rotate_right();
-                        bakenbards_l.flip_horizontally();
-                        shape_refresh();
-                    } else if (counter == 2) {
-                        up(brim, face);
-                        up(hat, brim);
-                        down(beard, face);
-                        align_up_right(bakenbards_r, beard);
-                        align_up_right(horn_r, face);
-                        align_up_left(bakenbards_l, beard);
-                        align_up_left(horn_l, face);
-                        shape_refresh();
-                    }
-                    counter += 1;
-                default:
-                    fprintf(stderr, "Unsupported event received: %d\n", event.type);
-                    break;
-            }
+        if (get_event && event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+            running = false;
         }
     }
     screen_destroy();
