@@ -145,8 +145,8 @@ void MyShape::move(int a, int b) {
 
 int main() {
 
-    Rectangle hat(Point(0, 0), Point(70, 50));
-    Line brim(Point(0, 150), 110);
+    Rectangle hat(Point(20, 20), Point(90, 70));
+    Line brim(Point(10, 150), 110);
     MyShape face(Point(150, 100), Point(270, 180));
     HalfCircle beard(Point(400, 100), 100);
     HalfCircle bakenbards_l(Point(400, 200), 20);
@@ -211,7 +211,7 @@ int main() {
                     }
                     counter += 1;
                 default:
-                    fprintf(stderr, "Unsupported event received: %d\n", event.type);
+                    // fprintf(stderr, "Unsupported event received: %d\n", event.type);
                     break;
             }
         }
