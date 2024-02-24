@@ -6,7 +6,7 @@ build
 .idea
 .vs
 .vscode
-/Lab1/test.cpp
-/Lab2/tests/my_test.cpp
-/Lab3/task.txt
-/Lab3/img.png
+/non-project files/Lab1/test.cpp
+/non-project files/Lab2/tests/my_test.cpp
+/non-project files/Lab3/task.txt
+/non-project files/Lab3/img.png

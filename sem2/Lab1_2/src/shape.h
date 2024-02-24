@@ -15,7 +15,7 @@
 #include "allegro5/allegro_font.h"
 #include "allegro5/allegro_ttf.h"
 #include "allegro5/allegro_image.h"
-#include "MyExceptions.h"
+#include "CustomExceptions.h"
 //==1. Поддерж­ка экрана ==
 
 ALLEGRO_DISPLAY* screen;
@@ -42,7 +42,7 @@ void screen_init() {
     al_install_keyboard();
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-    font = al_load_font("/home/referencecat/CLionProjects/A&DS/sem2/Lab1_2/resources/clacon2.ttf", 20, false); // todo relative path
+    font = al_load_font("../../../../sem2/Lab1_2/resources/clacon2.ttf", 20, false); // todo relative path
 }
 
 void screen_destroy() {
@@ -54,7 +54,7 @@ bool on_screen(int a, int b) // проверка попадания точки �
 { return 0 <= a && a < SCREEN_WIDTH && 0 <= b && b < SCREEN_HEIGHT; }
 
 void put_line(int x0, int y0, int x1, int y1) {
-    if (x0 == x1 && y0 == y1) throw DrawException("abobus");
+    if (x0 == x1 && y0 == y1) throw ScreenProcessingException("line cannot have length 0");
     al_draw_line(x0, SCREEN_HEIGHT - y0, x1, SCREEN_HEIGHT - y1, al_map_rgb(255, 255, 255), 1);
 }
 
@@ -73,14 +73,7 @@ struct Shape {   // Виртуальный базовый класс «фигу�
     static std::list<Shape *> shapes;
 protected:
     Point position;
-    Shape() {
-        try{
-            shapes.push_back(this);
-        } catch (std::runtime_error e) {
-        std::cerr << "ERROR" << std::endl;
-    }
-
-    } //Фигура присоединяется к списку
+    Shape() {shapes.push_back(this);} //Фигура присоединяется к списку
 
 public:
     virtual Point north() const = 0;  //Точки для привязки
@@ -101,7 +94,9 @@ public:
     virtual void draw() = 0;        //Рисование
     virtual void move(int, int) = 0;    //Перемещение
     virtual void resize(double) = 0;        //Изменение размера
-    virtual ~Shape(); //Деструктор
+    virtual ~Shape() {
+        shapes.remove(this);
+    } //Деструктор
 };
 
 std::list<Shape *> Shape::shapes;   // Размещение списка фигур
@@ -111,7 +106,7 @@ void shape_refresh()    // Перерисовка всех фигур на эк�
     for (auto p: Shape::shapes) {
         try {
             p->draw(); //Динамическое связывание!!!
-        } catch (std::exception exception) {
+        } catch (ScreenProcessingException exception) {
             std::cerr << exception.what() << std::endl;
             put_error(p->north().x, p->west().y);
         }

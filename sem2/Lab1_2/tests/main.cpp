@@ -156,7 +156,7 @@ int main() {
         init->rotate_left();
         hat = init;
 
-    } catch (std::exception exception) {
+    } catch (ShapeParametersException exception) {
         std::cerr << exception.what() << std::endl;
         hat = new ErrorSign(0, 0);
      }
@@ -165,7 +165,7 @@ int main() {
         auto* init = new MyShape(Point(100, 120), Point(220, 220));
         face = init;
 
-    } catch (std::exception exception) {
+    } catch (ShapeParametersException exception) {
         std::cerr << exception.what() << std::endl;
         face = new ErrorSign(0, 0);
     }
@@ -174,7 +174,7 @@ int main() {
         auto* init = new Line(Point(0, 150), 110);
         brim = init;
 
-    } catch (std::exception exception) {
+    } catch (ShapeParametersException exception) {
         std::cerr << exception.what() << std::endl;
         brim = new ErrorSign(0, 0);
     }
@@ -185,7 +185,7 @@ int main() {
 
         beard = init;
 
-    } catch (std::exception exception) {
+    } catch (ShapeParametersException exception) {
         std::cerr << exception.what() << std::endl;
         brim = new ErrorSign(0, 0);
     }

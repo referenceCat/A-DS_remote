@@ -56,10 +56,5 @@ public:
     }
 };
 
-Shape::~Shape() {
-        shapes.remove(this);
-        std::cout << "~Shape() called" << std::endl;
-}
-
 
 #endif //A_DS_REMOTE_ERRORSIGN_H
