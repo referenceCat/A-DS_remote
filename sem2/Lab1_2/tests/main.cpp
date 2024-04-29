@@ -18,7 +18,9 @@
 class HalfCircle : public Rectangle, public Reflectable {
     int direction; // 0 - right, 1 - up, 2 - left, 3 - down;
 public:
-    HalfCircle(Point a, int radius) : Rectangle(a, Point(a.x + radius * 2, a.y + radius)), direction(1) {}
+    HalfCircle(Point a, int radius) : Rectangle(a, Point(a.x + radius * 2, a.y + radius)), direction(1) {
+        if (radius <= 0) throw ShapeParametersException("wrong radius value for half_circle initialisation");
+    }
 
     void draw();
 
@@ -180,14 +182,14 @@ int main() {
     }
 
     try {
-        auto* init = new HalfCircle(Point(400, 100), 100);
+        auto* init = new HalfCircle(Point(400, 100), -100);
         init->flip_vertically();
 
         beard = init;
 
     } catch (ShapeParametersException exception) {
         std::cerr << exception.what() << std::endl;
-        brim = new ErrorSign(0, 0);
+        beard = new ErrorSign(0, 0);
     }
 
 

@@ -1,0 +1,2 @@
+add_executable(lab3_sem2_main main.cpp)
+target_link_libraries(lab3_sem2_main PUBLIC impl)

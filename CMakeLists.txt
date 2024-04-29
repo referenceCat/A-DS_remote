@@ -36,6 +36,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # here we specify the directories for each lab
 # TODO: add all labs from sem 1
 
-add_subdir_with_message(sem2/Lab1_2)
+add_subdir_with_message(sem2/Lab3)
 
 
