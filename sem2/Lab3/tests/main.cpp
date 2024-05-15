@@ -1,21 +1,21 @@
-#include "../src/MyBinarySearchTree.h"
+#include "../src/WeightedTree.h"
 
 //todo
-void generateRandomTree(MyBinarySearchTree* tree) {
-    tree->add(1);
-    tree->add(5);
-    tree->add(2);
-    tree->add(8);
-    tree->add(1);
-    tree->add(14);
-    tree->add(11);
-    tree->add(12);
-    tree->add(17);
-    tree->add(12);
+void generateRandomTree(WeightedTree* tree) {
+    tree->insert(1);
+    tree->insert(5);
+    tree->insert(2);
+    tree->insert(8);
+    tree->insert(1);
+    tree->insert(14);
+    tree->insert(11);
+    tree->insert(12);
+    tree->insert(17);
+    tree->insert(12);
 }
 
 int main() {
-    MyBinarySearchTree tree;
+    WeightedTree tree;
     generateRandomTree(&tree);
     tree.print();
     std::cout<< tree.contains(8);
