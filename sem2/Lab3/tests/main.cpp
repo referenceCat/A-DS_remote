@@ -17,6 +17,6 @@ void generateRandomTree(WeightedTree* tree) {
 int main() {
     WeightedTree tree;
     generateRandomTree(&tree);
-    tree.print();
+    tree.print(0);
     std::cout<< tree.contains(8);
 }

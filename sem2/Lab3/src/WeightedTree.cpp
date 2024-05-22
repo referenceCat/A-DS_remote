@@ -39,7 +39,15 @@ bool WeightedTree::empty() {
     return size() == 0;
 }
 
-void printBT(const std::string& prefix, const Node* node, bool isLeft) {
+void printInorder(Node* node) {
+    if (node == nullptr)
+        return;
+    printInorder(node->left);
+    std::cout << node->key << "(" << node->size << ") ";
+    printInorder(node->right);
+}
+
+void printBT(const std::string& prefix, const Node* node, bool isLeft, bool lastHasRight) {
     if (node != nullptr) {
         std::cout << prefix;
 
@@ -49,14 +57,17 @@ void printBT(const std::string& prefix, const Node* node, bool isLeft) {
         std::cout << node->key << "(" << node->size << ")" << std::endl;
 
         // enter the next tree level - left and right branch
-        printBT(prefix + (isLeft ? "│       " : "        "), node->left, true);
-        printBT(prefix + ((isLeft && node->left != nullptr) ? "│       " : "        "), node->right, false);
+        printBT(prefix + ((isLeft && lastHasRight) ? "│       " : "        "), node->left, true, node->right!= nullptr);
+        printBT(prefix + ((isLeft && lastHasRight) ? "│       " : "        "), node->right, false, node->right!= nullptr);
     }
 }
 
-void WeightedTree::print() {
+void WeightedTree::print(int mode=1) {
     if (empty()) std::cout << "Tree is empty" << std::endl;
-    else printBT("", root, false);
+    else if (mode == 0) printBT("", root, false, true);
+    else if (mode == 1) printInorder(root);
+
+    std::cout << std::endl;
 }
 
 void WeightedTree::clear() {
@@ -166,3 +177,5 @@ bool recursiveRandomInsert(Node*&h, int x) { //Рандомизированна�
 }
 
 bool WeightedTree::randomInsert(int x) { recursiveRandomInsert(root, x); return true;  }
+
+

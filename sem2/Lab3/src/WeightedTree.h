@@ -26,7 +26,7 @@ class WeightedTree {
 private:
     Node* root = nullptr;
 public:
-    void print();
+    void print(int);
     int size();
     void insert(int item);
     bool contains(int item);
