@@ -10,13 +10,14 @@
 #include <iterator>
 #include <stack>
 #include <string>
+#include "list"
 
 struct Node {
     Node(int i);
     int size;
     int key;
     Node* left,* right;
-    ~Node() {delete left; delete right;}
+    //~Node() {delete left; delete right;}
 
 private:
     Node();
@@ -41,10 +42,13 @@ struct ReadIterator : public std::iterator<std::forward_iterator_tag, int>
 
 
 class WeightedTree {
-private:
+protected:
     Node* root = nullptr;
+    std::list<Node*> sequence {};
 public:
-    void print(int);
+    void print();
+    void printElements();
+    void printSequence();
     int size();
     void insert(int item);
     bool contains(int item);
@@ -61,6 +65,13 @@ public:
 
     ReadIterator begin( )const;
     ReadIterator end( )const { return ReadIterator(nullptr); }
+    void concat(WeightedTree& tree);
+    void merge(WeightedTree& other);
+    void subst(WeightedTree& other, int position);
+    void unionSet(WeightedTree& other);
+    void difference(WeightedTree& other);
+    void s_difference(WeightedTree& other);
+
 };
 
 

@@ -64,17 +64,18 @@ void printBT(const std::string& prefix, const Node* node, bool isLeft, bool last
     }
 }
 
-void WeightedTree::print(int mode=1) {
+void WeightedTree::print() {
     if (empty()) std::cout << "Tree is empty" << std::endl;
-    else if (mode == 0) printBT("", root, false, true);
-    else if (mode == 1) printInorder(root);
+    else printBT("", root, false, true);
 
     std::cout << std::endl;
 }
 
 void WeightedTree::clear() {
     if (empty()) return;
-    Clear(root);
+    delete root;
+    root = nullptr;
+    sequence.clear();
 }
 
 void calculateSize(Node* node) {
@@ -116,6 +117,7 @@ bool recursiveInsert(Node* &h, int x) { //Вставка в корень
 
 void WeightedTree::insert(int x) { //Вставка нового узла в корень (оболочка)
     recursiveInsert(root, x);
+    sequence.push_back(root);
 }
 
 void partR(Node*&h, int k) //Разбиение по k-му ключу
@@ -145,21 +147,25 @@ Node* joinLR(Node* a, Node*b) { //Объединение поддеревьев
 }
 
 
-bool recursiveRemove(Node*& h, int v) { //Рекурсивное удаление с объединением поддеревьев
+bool recursiveRemove(Node*& h, int v, std::list<Node*> seq) { //Рекурсивное удаление с объединением поддеревьев
     if (!h) return false;
     int w = h->key;
-    if (v < w) recursiveRemove(h->left, v);
-    if (w < v) recursiveRemove(h->right, v);
-    if (v == w) { Node* t = h;
+    if (v < w) recursiveRemove(h->left, v, seq);
+    if (w < v) recursiveRemove(h->right, v, seq);
+    if (v == w) {
+        Node* t = h;
         h = joinLR(h->left, h->right);
         if(h) calculateSize(h);
-        t->left = t->left = nullptr;
+        t->left = t->right = nullptr;
+        seq.remove(t);
         delete t;
     }
     return true;
 }
 
-bool WeightedTree::erase(int k) { return recursiveRemove(root, k); } //Рекурсивное удаление
+bool WeightedTree::erase(int k) {
+    return recursiveRemove(root, k, sequence);
+} //Рекурсивное удаление
 
 bool recursiveRandomInsert(Node*&h, int x) { //Рандомизированная вставка
     if (!h) {
@@ -216,3 +222,52 @@ ReadIterator WeightedTree::begin( )const { //Поиск первого элем�
     return ReadIterator(p, move(St)); //Создаём итератор, передаём ему стек
 }
 
+void WeightedTree::printSequence() {
+    for (auto x: sequence) {
+        std::cout<<x->key<<" ";
+    }
+    std::cout<<std::endl;
+}
+
+void WeightedTree::concat(WeightedTree &other) {
+    for (auto x: other.sequence) insert(x->key);
+}
+
+void WeightedTree::merge(WeightedTree &other) {
+    for (auto x: other.sequence) insert(x->key);
+    sequence.sort();
+}
+
+void WeightedTree::subst(WeightedTree &other, int position) {
+    if (position >= sequence.size()) concat(other);
+    else {
+        auto oldSequence = sequence;
+        sequence = std::list<Node*> {};
+        int i = 0;
+        for (auto x: oldSequence) {
+            if (i == position) concat(other);
+            insert(x->key);
+        }
+    }
+}
+
+void WeightedTree::s_difference(WeightedTree &other) {
+    WeightedTree tmp {};
+    tmp.unionSet(other);
+    tmp.difference(*this);
+    difference(other);
+    unionSet(tmp);
+}
+
+void WeightedTree::difference(WeightedTree &other) {
+    for (auto x: other) erase(x);
+}
+
+void WeightedTree::unionSet(WeightedTree &other) {
+    for (auto x: other) insert(x);
+}
+
+void WeightedTree::printElements() {
+    for (auto x: *this) std::cout << x << " ";
+    std::cout << std::endl;
+}
