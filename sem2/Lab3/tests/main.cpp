@@ -2,16 +2,17 @@
 
 //todo
 void generateRandomTree(WeightedTree* tree) {
-    tree->insert(1);
-    tree->insert(5);
-    tree->insert(2);
-    tree->insert(8);
-    tree->insert(1);
-    tree->insert(14);
-    tree->insert(11);
-    tree->insert(12);
-    tree->insert(17);
-    tree->insert(12);
+    tree->randomInsert(1);
+    tree->randomInsert(5);
+    tree->randomInsert(17);
+    tree->randomInsert(2);
+    tree->randomInsert(8);
+    tree->randomInsert(1);
+    tree->randomInsert(12);
+    tree->randomInsert(14);
+    tree->randomInsert(11);
+    tree->randomInsert(12);
+
 }
 
 int main() {

@@ -51,7 +51,9 @@ void printBT(const std::string& prefix, const Node* node, bool isLeft, bool last
     if (node != nullptr) {
         std::cout << prefix;
 
-        std::cout << (isLeft ? "├──────" : "└──────");
+        if (!isLeft) std::cout << "└─R────";
+        else if (lastHasRight) std::cout << "├─L────";
+        else std::cout << "└─L────";
 
         // print the key of the node
         std::cout << node->key << "(" << node->size << ")" << std::endl;
