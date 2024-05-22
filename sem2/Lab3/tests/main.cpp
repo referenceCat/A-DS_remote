@@ -19,5 +19,11 @@ int main() {
     WeightedTree tree;
     generateRandomTree(&tree);
     tree.print(0);
-    std::cout<< tree.contains(8);
+
+    tree.balance();
+    tree.print(0);
+
+    for (auto x: tree) {
+        std::cout << x << " ";
+    }
 }

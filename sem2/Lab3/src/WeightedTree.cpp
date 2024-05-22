@@ -180,4 +180,39 @@ bool recursiveRandomInsert(Node*&h, int x) { //Рандомизированна�
 
 bool WeightedTree::randomInsert(int x) { recursiveRandomInsert(root, x); return true;  }
 
+//Инкремент = шаг по дереву, внутренний обход
+ReadIterator& ReadIterator::operator++( )
+{
+    if (!Ptr) { //Первое обращение?
+        return *this; //Не работает без предварительной установки на дерево
+    }
+    if (Ptr->right) {    // Шаг вправо
+        St.push(std::make_pair(Ptr, 1));
+        Ptr = Ptr->right;
+        while (Ptr->left) { //... и искать крайний левый
+            St.push(std::make_pair(Ptr, 0));
+            Ptr = Ptr->left;
+        }
+    }
+    else {       // Подъём вверх, пока слева пусто
+        std::pair<Node*, int> pp(Ptr, 1);
+        while (!St.empty( ) && pp.second) { pp = St.top( ); St.pop( ); }
+        if (pp.second) //Шаг вправо — тупик, завершить!
+        {  Ptr = nullptr; }
+        else Ptr = pp.first;  // Шаг вправо и продолжать
+    }
+    return (*this);
+}
+
+ReadIterator WeightedTree::begin( )const { //Поиск первого элемента множества
+    MyStack St;
+    Node * p(root);
+    if (p) {   //Идём по левой ветви, запоминая путь в стеке
+        while (p->left) {
+            St.push(std::make_pair(p, 0));
+            p = p->left;
+        }
+    }
+    return ReadIterator(p, move(St)); //Создаём итератор, передаём ему стек
+}
 

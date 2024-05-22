@@ -22,6 +22,24 @@ private:
     Node();
 };
 
+using MyStack = std::stack<std::pair<Node*, int>>; //Тип стека для обхода дерева
+//ИТЕРАТОР ЧТЕНИЯ
+//template<class Container = Set> — настройка на контейнер не требуется
+struct ReadIterator : public std::iterator<std::forward_iterator_tag, int>
+{
+    Node * Ptr;   //Реальный указатель
+    MyStack St;  //Стек с путём от корня дерева
+    ReadIterator(Node *p = nullptr) : Ptr(p) { }
+    ReadIterator(Node *p, const MyStack &&St) : Ptr(p), St(move(St)) { }
+    bool operator == (const ReadIterator & Other) const { return Ptr == Other.Ptr; }
+    bool operator != (const ReadIterator & Other) const { return !(*this == Other); }
+    ReadIterator & operator++( );
+    ReadIterator operator++(int) { ReadIterator temp(*this); ++*this; return temp; }
+    pointer operator->( ) { return &Ptr->key; }
+    reference operator*( ) { return Ptr->key; }
+};
+
+
 class WeightedTree {
 private:
     Node* root = nullptr;
@@ -40,8 +58,10 @@ public:
 //    WeightedTree (const WeightedTree & other): WeightedTree() {
 //        for (auto x : other) insert(x);
 //    }
-};
 
+    ReadIterator begin( )const;
+    ReadIterator end( )const { return ReadIterator(nullptr); }
+};
 
 
 
