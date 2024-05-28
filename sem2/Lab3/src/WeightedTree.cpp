@@ -234,8 +234,13 @@ void WeightedTree::concat(WeightedTree &other) {
 }
 
 void WeightedTree::merge(WeightedTree &other) {
+    struct Comparator {
+        bool operator()(const Node* o1, const Node* o2) const {
+            return o1->key < o2->key;
+        }
+    };
     for (auto x: other.sequence) insert(x->key);
-    sequence.sort();
+    sequence.sort(Comparator());
 }
 
 void WeightedTree::subst(WeightedTree &other, int position) {
@@ -247,6 +252,7 @@ void WeightedTree::subst(WeightedTree &other, int position) {
         for (auto x: oldSequence) {
             if (i == position) concat(other);
             insert(x->key);
+            i++;
         }
     }
 }

@@ -66,22 +66,21 @@ int main() {
     std::cout << "B: ";
     treeB.printSequence();
 
-    result.clear();
-    result.unionSet(treeA);
-    result.concat(treeB);
+    WeightedTree concatResult;
+    concatResult.concat(treeA);
+    concatResult.concat(treeB);
     std::cout << "A.concat(B): ";
-    result.printSequence();
-
-    result.clear();
-    result.unionSet(treeA);
-    result.merge(treeB);
+    concatResult.printSequence();
+    WeightedTree mergeResult;
+    mergeResult.concat(treeA);
+    mergeResult.merge(treeB);
     std::cout << "A.merge(B): ";
-    result.printSequence();
+    mergeResult.printSequence();
 
-    result.clear();
-    result.unionSet(treeA);
-    result.subst(treeB, 2);
+    WeightedTree substResult;
+    substResult.concat(treeA);
+    substResult.subst(treeB, 2);
     std::cout << "A.subst(B, 2): ";
-    result.printSequence();
+    substResult.printSequence();
 
 }
