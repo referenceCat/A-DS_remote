@@ -6,7 +6,7 @@
 #include "chrono"
 #include "../src/WeightedTree.h"
 #define POWER_MIN 10
-#define POWER_MAX 200
+#define POWER_MAX 1000
 #define UNIVERSUM_SIZE 10000
 
 void generateRandomSequence(WeightedTree& tree, int power, int universum_size) { // как в методичке
@@ -23,7 +23,7 @@ int main( )
     srand((unsigned int)7);      //Пока здесь константа, данные повторяются
 //    srand((unsigned int)time(nullptr)); //Разблокировать для случайных данных
     auto rand = [ ] (int d) { return std::rand( )%d; }; //Лямбда-функция!
-    std::ofstream fout(getenv("in.txt"));   //Открытие файла для результатов
+    std::ofstream fout(R"(C:\Users\referenceCat\CLionProjects\A-DS_remote\sem2\Lab3\tests\in.txt)");   //Открытие файла для результатов
     //=== Данные ===
     WeightedTree sequenceA;
     WeightedTree sequenceB;
@@ -56,6 +56,7 @@ int main( )
         auto dt = duration_cast<duration<double,std::micro>>(t2-t1).count( );
         fout << power << '\t' << dt << std::endl; //Выдача в файл
     }
-
+    fout.flush();
+    fout.close();
     return 0;
 }

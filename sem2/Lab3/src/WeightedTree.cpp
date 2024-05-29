@@ -266,7 +266,12 @@ void WeightedTree::s_difference(WeightedTree &other) {
 }
 
 void WeightedTree::difference(WeightedTree &other) {
-    for (auto x: other) erase(x);
+    WeightedTree tmp {};
+    for (auto x: *this)
+        if (!other.contains(x))
+            tmp.insert(x);
+    clear();
+    unionSet(tmp);
 }
 
 void WeightedTree::unionSet(WeightedTree &other) {
